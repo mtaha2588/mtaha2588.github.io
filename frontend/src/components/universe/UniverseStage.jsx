@@ -41,7 +41,7 @@ export default function UniverseStage({ active = true }) {
       {active && !immersive && <BackgroundCanvas />}
       {started && (
         <div
-          className="fixed inset-0 z-0 bg-[#02040a]"
+          className="fixed inset-0 z-0 bg-[#050505]"
           style={{ visibility: showCanvas ? "visible" : "hidden" }}
           aria-hidden={!showCanvas}
         >

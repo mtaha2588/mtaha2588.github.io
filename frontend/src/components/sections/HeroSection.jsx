@@ -60,9 +60,11 @@ export default function HeroSection() {
           <motion.h1
             id="hero-name"
             variants={item}
-            className="mt-6 font-display text-[2.7rem] leading-[1.02] font-semibold tracking-tight text-fg [text-shadow:0_2px_30px_rgba(2,4,10,0.9)] sm:text-6xl lg:text-[4.4rem]"
+            className="mt-6 font-display text-[2.15rem] leading-[1.05] font-semibold tracking-tight text-fg uppercase [text-shadow:0_2px_30px_rgba(5,5,5,0.9)] sm:text-5xl lg:text-[3.6rem]"
           >
-            {profile.name}
+            {/* Last name in red, like a brand mark */}
+            {profile.name.split(" ").slice(0, -1).join(" ")}{" "}
+            <span className="text-cyan">{profile.name.split(" ").slice(-1)}</span>
           </motion.h1>
 
           <motion.ul variants={item} className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5" aria-label="Roles">
@@ -79,14 +81,14 @@ export default function HeroSection() {
 
           <motion.p
             variants={item}
-            className="mt-6 font-display text-[1.6rem] leading-tight font-medium tracking-tight text-fg [text-shadow:0_2px_24px_rgba(2,4,10,0.9)] sm:text-[2rem]"
+            className="mt-6 font-sans text-[1.35rem] leading-snug font-semibold tracking-tight text-fg [text-shadow:0_2px_24px_rgba(5,5,5,0.9)] sm:text-[1.65rem]"
           >
             {profile.valueLine}
           </motion.p>
 
           <motion.p
             variants={item}
-            className="mt-5 text-base leading-relaxed text-fg-muted [text-shadow:0_1px_20px_rgba(2,4,10,0.95)] sm:text-[17px]"
+            className="mt-5 text-base leading-relaxed text-fg-muted [text-shadow:0_1px_20px_rgba(5,5,5,0.95)] sm:text-[17px]"
           >
             {profile.intro}
           </motion.p>

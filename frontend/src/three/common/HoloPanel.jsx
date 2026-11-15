@@ -34,7 +34,7 @@ export default function HoloPanel({
     el.current.style.visibility = o < 0.02 ? "hidden" : "";
   });
 
-  const border = accent === "violet" ? "border-violet/40" : accent === "teal" ? "border-teal-300/40" : "border-cyan/40";
+  const border = accent === "violet" ? "border-violet/40" : accent === "teal" ? "border-red-300/40" : "border-cyan/40";
 
   return (
     <group ref={group} position={position} rotation-y={rotationY} scale={scale}>
@@ -43,7 +43,7 @@ export default function HoloPanel({
           ref={el}
           aria-hidden="true"
           style={{ width, opacity: 0, visibility: "hidden" }}
-          className={`rounded-xl border ${border} bg-[#050a18]/70 p-3 font-mono text-[10px] leading-relaxed text-fg-muted shadow-[0_0_40px_-10px_rgba(34,211,238,0.45)] backdrop-blur-md`}
+          className={`rounded-xl border ${border} bg-[#080809]/70 p-3 font-mono text-[10px] leading-relaxed text-fg-muted shadow-[0_0_40px_-10px_rgba(255,42,61,0.45)] backdrop-blur-md`}
         >
           {children}
         </div>

@@ -37,13 +37,13 @@ function Helix() {
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[strand, 3]} />
         </bufferGeometry>
-        <pointsMaterial color="#a5f3fc" size={0.09} sizeAttenuation {...add} opacity={0.9} />
+        <pointsMaterial color="#ffc2c7" size={0.09} sizeAttenuation {...add} opacity={0.9} />
       </points>
       <lineSegments>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[rungs, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial color="#8b5cf6" {...add} opacity={0.22} />
+        <lineBasicMaterial color="#8f0d1b" {...add} opacity={0.22} />
       </lineSegments>
     </>
   );
@@ -62,7 +62,7 @@ function Gyroscope() {
     c.rotation.set(Math.PI / 2, t * 0.25, -t * 0.3);
     coreRef.current.rotation.y = t * 0.2;
   });
-  const colors = ["#22d3ee", "#8b5cf6", "#38bdf8"];
+  const colors = ["#ff2a3d", "#8f0d1b", "#ff5563"];
   return (
     <group position-y={CORE_Y}>
       {[1.7, 2.0, 2.3].map((r, i) => (
@@ -75,11 +75,11 @@ function Gyroscope() {
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[core, 3]} />
         </bufferGeometry>
-        <pointsMaterial color="#c4b5fd" size={0.05} sizeAttenuation {...add} opacity={0.85} />
+        <pointsMaterial color="#ffb3ba" size={0.05} sizeAttenuation {...add} opacity={0.85} />
       </points>
       <mesh>
         <sphereGeometry args={[0.35, 24, 24]} />
-        <meshBasicMaterial color="#e0f2fe" {...add} opacity={0.7} />
+        <meshBasicMaterial color="#ffe4e6" {...add} opacity={0.7} />
       </mesh>
     </group>
   );
@@ -99,7 +99,7 @@ function IdentityJson() {
       <PanelTitle>
         identity.json <span className="text-fg-subtle">● ● ●</span>
       </PanelTitle>
-      <pre className="text-[9px] leading-snug whitespace-pre-wrap text-cyan-100/90">
+      <pre className="text-[9px] leading-snug whitespace-pre-wrap text-red-100/90">
         {json.split("\n").map((line, i) => (
           <span key={i} className="block">
             <span className="mr-2 inline-block w-3 text-right text-fg-subtle/60">{i + 1}</span>
@@ -119,7 +119,7 @@ function IdentityCard() {
         <img
           src={avatar}
           alt=""
-          className="h-10 w-10 rounded-full border border-holo-cyan/50 bg-[#0b1224] object-cover object-top shadow-[0_0_12px_-2px_rgba(0,229,255,0.7)]"
+          className="h-10 w-10 rounded-full border border-holo-cyan/50 bg-[#111113] object-cover object-top shadow-[0_0_12px_-2px_rgba(255,51,71,0.7)]"
         />
         <p className="font-display text-[15px] text-fg">{profile.name}</p>
       </div>
@@ -147,7 +147,7 @@ export default function IdentityCore({ reduced }) {
         dashes={90}
         fill={0.4}
         speed={0.03}
-        color="#8b5cf6"
+        color="#8f0d1b"
         opacity={0.6}
         reduced={reduced}
       />
@@ -158,7 +158,7 @@ export default function IdentityCore({ reduced }) {
         dashes={1}
         fill={1}
         speed={-0.02}
-        color="#22d3ee"
+        color="#ff2a3d"
         opacity={0.35}
         reduced={reduced}
       />

@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import "@fontsource-variable/unbounded"; // display font, self-hosted (wide, geometric headings)
 import "./index.css";
 import { missingProfileFields } from "./data/profile";
 

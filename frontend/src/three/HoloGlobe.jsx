@@ -12,10 +12,10 @@ import softPointFrag from "./shaders/softPoint.frag";
 export const GLOBE_RADIUS = 3;
 const R = GLOBE_RADIUS;
 
-const CYAN = new Color("#22d3ee");
-const ELECTRIC = new Color("#4f8cff");
-const VIOLET = new Color("#8b5cf6");
-const ICE = new Color("#dbeafe");
+const CYAN = new Color("#ff2a3d");
+const ELECTRIC = new Color("#e11d2e");
+const VIOLET = new Color("#8f0d1b");
+const ICE = new Color("#ffe4e6");
 
 /** Time source that freezes ambient motion under reduced-motion preferences. */
 const clockTime = (state, reduced) => (reduced ? 6 : state.clock.elapsedTime);
@@ -30,9 +30,9 @@ function GlobeBody({ reduced, segments }) {
     () => ({
       uTime: { value: 0 },
       uReveal: { value: 0 },
-      uBody: { value: new Color("#060c1c") },
-      uGrid: { value: new Color("#3b82f6") },
-      uRim: { value: new Color("#38bdf8") },
+      uBody: { value: new Color("#0a0a0b") },
+      uGrid: { value: new Color("#d4192a") },
+      uRim: { value: new Color("#ff5563") },
     }),
     [],
   );
@@ -129,7 +129,7 @@ function Atmosphere() {
   // Animate through the material's own uniforms (mat.current.uniforms): that is the
   // object three.js uploads to the GPU.
   const mat = useRef();
-  const uniforms = useMemo(() => ({ uColor: { value: new Color("#3b9bff") }, uReveal: { value: 0 } }), []);
+  const uniforms = useMemo(() => ({ uColor: { value: new Color("#e8323f") }, uReveal: { value: 0 } }), []);
   useFrame(() => {
     mat.current.uniforms.uReveal.value = motion.intro.reveal;
   });
@@ -306,7 +306,7 @@ function HubMarkers({ reduced }) {
       </mesh>
       <mesh>
         <circleGeometry args={[h.primary ? 0.05 : 0.032, 16]} />
-        <meshBasicMaterial color={h.primary ? "#e9d5ff" : "#e0f2fe"} transparent depthWrite={false} side={DoubleSide} />
+        <meshBasicMaterial color={h.primary ? "#fecdd3" : "#ffe4e6"} transparent depthWrite={false} side={DoubleSide} />
       </mesh>
     </group>
   ));
@@ -372,8 +372,8 @@ function DataStreams({ streams, perStream, reduced }) {
     () => ({
       uTime: { value: 0 },
       uPixelRatio: { value: 1 },
-      uColor: { value: new Color("#67e8f9") },
-      uColorB: { value: new Color("#c4b5fd") },
+      uColor: { value: new Color("#ff7a85") },
+      uColorB: { value: new Color("#ffb3ba") },
       uOpacity: { value: 0 },
     }),
     [],
@@ -554,7 +554,7 @@ function Satellite({ radius, tilt, speed, phase, color, reduced }) {
         <group ref={sat}>
           <mesh>
             <octahedronGeometry args={[0.09, 0]} />
-            <meshBasicMaterial color="#e0f7ff" transparent />
+            <meshBasicMaterial color="#ffe9eb" transparent />
           </mesh>
         </group>
         <mesh ref={beam} geometry={beamGeometry}>
@@ -639,24 +639,24 @@ export default function HoloGlobe({ quality, reduced, position = [0, 0, 0] }) {
 
       {/* Equatorial HUD ring with tick marks, plus two satellite orbits */}
       <group rotation-x={Math.PI / 2 - 0.42}>
-        <OrbitRing radius={R * 1.42} dashes={180} speed={0.02} color="#38bdf8" reduced={reduced} />
+        <OrbitRing radius={R * 1.42} dashes={180} speed={0.02} color="#ff5563" reduced={reduced} />
         <OrbitRing
           radius={R * 1.5}
           width={0.004}
           dashes={24}
           speed={-0.015}
-          color="#8b5cf6"
+          color="#8f0d1b"
           opacityScale={0.6}
           reduced={reduced}
         />
       </group>
-      <Satellite radius={R * 1.62} tilt={[1.1, 0.3, 0]} speed={0.22} phase={0.4} color="#22d3ee" reduced={reduced} />
+      <Satellite radius={R * 1.62} tilt={[1.1, 0.3, 0]} speed={0.22} phase={0.4} color="#ff2a3d" reduced={reduced} />
       <Satellite
         radius={R * 1.78}
         tilt={[-0.9, -0.5, 0.2]}
         speed={-0.16}
         phase={2.6}
-        color="#a78bfa"
+        color="#ff8a94"
         reduced={reduced}
       />
 

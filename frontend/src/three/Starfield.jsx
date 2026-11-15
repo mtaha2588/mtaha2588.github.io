@@ -33,7 +33,7 @@ const starFrag = /* glsl */ `
   }
 `;
 
-const STAR_COLORS = ["#ffffff", "#cfe6ff", "#9fd8ff", "#c4b5fd", "#7dd3fc"].map((c) => new Color(c));
+const STAR_COLORS = ["#ffffff", "#ffd9dc", "#ff9aa3", "#ffb3ba", "#ff7a85"].map((c) => new Color(c));
 
 function Stars({ count }) {
   const material = useRef();
@@ -110,9 +110,9 @@ function useGlowTexture(inner, outer) {
 }
 
 function Nebula() {
-  const violet = useGlowTexture("rgba(139,92,246,0.55)", "rgba(88,60,200,0.18)");
-  const blue = useGlowTexture("rgba(79,140,255,0.5)", "rgba(40,80,200,0.15)");
-  const cyan = useGlowTexture("rgba(34,211,238,0.35)", "rgba(20,120,160,0.1)");
+  const violet = useGlowTexture("rgba(143,13,27,0.55)", "rgba(200,60,73,0.18)");
+  const blue = useGlowTexture("rgba(225,29,46,0.5)", "rgba(200,40,54,0.15)");
+  const cyan = useGlowTexture("rgba(255,42,61,0.35)", "rgba(160,20,33,0.1)");
   const group = useRef();
 
   const clouds = [
@@ -195,8 +195,8 @@ function Dust({ count }) {
       uTime: { value: 0 },
       uOpacity: { value: 0 },
       uPixelRatio: { value: 1 },
-      uColor: { value: new Color("#5eead4") },
-      uColorB: { value: new Color("#a78bfa") },
+      uColor: { value: new Color("#ff6b78") },
+      uColorB: { value: new Color("#ff8a94") },
     }),
     [],
   );

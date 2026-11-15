@@ -85,7 +85,7 @@ export default function Exhibit({
   index,
   radius = 6,
   hitHeight = 6,
-  color = "#22d3ee",
+  color = "#ff2a3d",
   reduced,
   panels,
   children,

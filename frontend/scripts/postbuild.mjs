@@ -119,9 +119,9 @@ function shell(page) {
   if (page.path === "/" && !page.notFound) {
     const roles = profile.title.split(" | ").map(esc).join(" · ");
     return `<section class="relative flex min-h-[100svh] items-center pt-24 pb-24 lg:pt-28"><div class="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:px-8"><div class="max-w-xl">
-      <h1 class="mt-6 font-display text-[2.7rem] leading-[1.02] font-semibold tracking-tight text-fg sm:text-6xl lg:text-[4.4rem]">${esc(profile.name)}</h1>
+      <h1 class="mt-6 font-display text-[2.15rem] leading-[1.05] font-semibold tracking-tight text-fg uppercase sm:text-5xl lg:text-[3.6rem]">${esc(profile.name.split(" ").slice(0, -1).join(" "))} <span class="text-cyan">${esc(profile.name.split(" ").slice(-1)[0])}</span></h1>
       <p class="mt-4 font-mono text-[12px] tracking-wide text-holo-cyan sm:text-[13px]">${roles}</p>
-      <p class="mt-6 font-display text-[1.6rem] leading-tight font-medium tracking-tight text-fg sm:text-[2rem]">${esc(profile.valueLine)}</p>
+      <p class="mt-6 font-sans text-[1.35rem] leading-snug font-semibold tracking-tight text-fg sm:text-[1.65rem]">${esc(profile.valueLine)}</p>
       <p class="mt-5 text-base leading-relaxed text-fg-muted sm:text-[17px]">${esc(profile.intro)}</p>
       <p class="mt-4 text-sm text-fg-muted">${esc(profile.timezones)}</p>
       <p class="mt-8 flex flex-wrap gap-3"><a class="btn-primary" href="#contact">Book a free call</a><a class="btn-ghost" href="#projects">See my work</a></p>

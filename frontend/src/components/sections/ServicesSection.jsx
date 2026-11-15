@@ -50,7 +50,7 @@ export default function ServicesSection() {
                   <ul className="mt-4 space-y-2">
                     {s.deliverables.map((d) => (
                       <li key={d} className="flex gap-2.5 text-sm text-fg-muted">
-                        <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-signal" aria-hidden="true" />
+                        <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-cyan" aria-hidden="true" />
                         {d}
                       </li>
                     ))}

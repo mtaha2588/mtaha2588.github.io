@@ -9,10 +9,10 @@ const TASKS = [
   { id: "sales_summary", label: "Sales summary", hint: "Aggregate records, detect the trend, write a report" },
 ];
 const STAGE_STYLE = {
-  input: "text-cyan-200 border-cyan/30",
-  processing: "text-indigo-200 border-indigo-400/30",
-  decision: "text-violet-200 border-violet/40",
-  output: "text-sky-200 border-sky-400/30",
+  input: "text-red-200 border-cyan/30",
+  processing: "text-rose-200 border-rose-400/30",
+  decision: "text-rose-200 border-violet/40",
+  output: "text-red-200 border-red-400/30",
 };
 const STEP_MS = 750;
 
@@ -153,7 +153,7 @@ export default function WorkflowRunner() {
                 </div>
                 <p className="mt-1 font-mono text-xs text-fg">{s.tool}</p>
                 <p className="text-xs text-fg-muted">
-                  {s.description} → <span className="text-cyan-200">{s.output_summary}</span>
+                  {s.description} → <span className="text-red-200">{s.output_summary}</span>
                 </p>
               </li>
             ))}

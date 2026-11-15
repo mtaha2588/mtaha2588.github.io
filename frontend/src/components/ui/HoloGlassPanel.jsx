@@ -55,9 +55,9 @@ export default function HoloGlassPanel({ children, className = "" }) {
       <svg className="holo-orbit" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id={`${uid}-orbit`} x1="0" x2="1">
-            <stop offset="0" stopColor="#00e5ff" />
-            <stop offset="0.5" stopColor="#2563ff" stopOpacity="0.6" />
-            <stop offset="1" stopColor="#8b5cf6" />
+            <stop offset="0" stopColor="#ff3347" />
+            <stop offset="0.5" stopColor="#a50f1e" stopOpacity="0.6" />
+            <stop offset="1" stopColor="#8f0d1b" />
           </linearGradient>
         </defs>
         <ellipse
@@ -78,7 +78,7 @@ export default function HoloGlassPanel({ children, className = "" }) {
           rx="196"
           ry="44"
           fill="none"
-          stroke="#a5f3fc"
+          stroke="#ffc2c7"
           strokeWidth="3"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"

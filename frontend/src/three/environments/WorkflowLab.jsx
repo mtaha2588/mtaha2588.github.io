@@ -68,7 +68,7 @@ function ProcessGlyph({ color, glow }) {
         <lineBasicMaterial color={color} {...add} opacity={0.45 + glow * 0.4} />
       </lineSegments>
       <lineSegments ref={b} geometry={inner}>
-        <lineBasicMaterial color="#e0f2fe" {...add} opacity={0.6 + glow * 0.4} />
+        <lineBasicMaterial color="#ffe4e6" {...add} opacity={0.6 + glow * 0.4} />
       </lineSegments>
     </group>
   );
@@ -85,7 +85,7 @@ function AnalyseGlyph({ color, glow }) {
       </lineSegments>
       <mesh>
         <sphereGeometry args={[0.22, 16, 16]} />
-        <meshBasicMaterial color="#e0e7ff" {...add} opacity={0.6 + glow * 0.4} />
+        <meshBasicMaterial color="#ffe4e6" {...add} opacity={0.6 + glow * 0.4} />
       </mesh>
     </group>
   );
@@ -106,7 +106,7 @@ function DecideGlyph({ color, glow }) {
           <mesh position={[x * 1.1, 1.35, 0]}>
             <sphereGeometry args={[0.09, 12, 12]} />
             <meshBasicMaterial
-              color={i === 1 ? "#f5f3ff" : color}
+              color={i === 1 ? "#fff1f2" : color}
               {...add}
               opacity={i === 1 ? 0.9 : 0.4 + glow * 0.3}
             />
@@ -243,13 +243,13 @@ function Conveyor({ reduced }) {
   return (
     <>
       <line geometry={tube}>
-        <lineBasicMaterial color="#38bdf8" {...add} opacity={0.35} />
+        <lineBasicMaterial color="#ff5563" {...add} opacity={0.35} />
       </line>
       <points ref={points} frustumCulled={false}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
-        <pointsMaterial color="#a5f3fc" size={0.12} sizeAttenuation {...add} />
+        <pointsMaterial color="#ffc2c7" size={0.12} sizeAttenuation {...add} />
       </points>
       <mesh ref={runner} visible={false}>
         <icosahedronGeometry args={[0.2, 1]} />
@@ -290,7 +290,7 @@ export default function WorkflowLab({ reduced }) {
         dashes={160}
         fill={0.35}
         speed={0.015}
-        color="#3b82f6"
+        color="#d4192a"
         opacity={0.45}
         reduced={reduced}
       />
@@ -301,7 +301,7 @@ export default function WorkflowLab({ reduced }) {
         dashes={1}
         fill={1}
         speed={-0.01}
-        color="#22d3ee"
+        color="#ff2a3d"
         opacity={0.3}
         reduced={reduced}
       />

@@ -62,9 +62,9 @@ export default function HoloPortrait({ className = "", large = false }) {
             <svg className="hp-rings" viewBox="0 0 200 200" aria-hidden="true">
               <defs>
                 <linearGradient id={`${uid}-ring`} x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0" stopColor="#00e5ff" />
-                  <stop offset="0.5" stopColor="#2563ff" />
-                  <stop offset="1" stopColor="#8b5cf6" />
+                  <stop offset="0" stopColor="#ff3347" />
+                  <stop offset="0.5" stopColor="#a50f1e" />
+                  <stop offset="1" stopColor="#8f0d1b" />
                 </linearGradient>
               </defs>
               <g className="hp-spin">
@@ -83,7 +83,7 @@ export default function HoloPortrait({ className = "", large = false }) {
                   cy="100"
                   r="78"
                   fill="none"
-                  stroke="#00e5ff"
+                  stroke="#ff3347"
                   strokeWidth="0.6"
                   strokeDasharray="40 14 6 14"
                   opacity="0.6"
@@ -95,12 +95,12 @@ export default function HoloPortrait({ className = "", large = false }) {
                   cy="100"
                   r="64"
                   fill="none"
-                  stroke="#8b5cf6"
+                  stroke="#8f0d1b"
                   strokeWidth="0.8"
                   strokeDasharray="60 30"
                   opacity="0.55"
                 />
-                <circle cx="100" cy="8" r="2" fill="#a5f3fc" />
+                <circle cx="100" cy="8" r="2" fill="#ffc2c7" />
               </g>
             </svg>
             <div className="hp-column" aria-hidden="true" />
@@ -126,7 +126,7 @@ export default function HoloPortrait({ className = "", large = false }) {
             </p>
             <div className={`hp-plate ${large ? "px-4 py-3" : "px-3.5 py-2.5"}`}>
               <p
-                className={`font-display leading-tight font-semibold text-fg ${large ? "text-[18px]" : "text-[15px]"}`}
+                className={`font-display leading-tight font-semibold whitespace-nowrap text-fg ${large ? "text-[13px] sm:text-[16px]" : "text-[12px]"}`}
               >
                 {profile.name}
               </p>

@@ -24,10 +24,10 @@ const CORE_Y = 2.3;
 const BRAIN_CENTER = new Vector3(0, CORE_Y, 0);
 
 const STAGES = [
-  { id: "input", label: "Input", pos: new Vector3(-4.0, 0.9, 2.0), color: "#00e5ff" },
-  { id: "processing", label: "Processing", pos: new Vector3(-2.1, 4.6, -0.8), color: "#2563ff" },
-  { id: "decision", label: "Decision", pos: new Vector3(2.1, 4.6, -0.8), color: "#8b5cf6" },
-  { id: "output", label: "Output", pos: new Vector3(3.6, 0.5, 2.6), color: "#d946ef" },
+  { id: "input", label: "Input", pos: new Vector3(-4.0, 0.9, 2.0), color: "#ff3347" },
+  { id: "processing", label: "Processing", pos: new Vector3(-2.1, 4.6, -0.8), color: "#a50f1e" },
+  { id: "decision", label: "Decision", pos: new Vector3(2.1, 4.6, -0.8), color: "#8f0d1b" },
+  { id: "output", label: "Output", pos: new Vector3(3.6, 0.5, 2.6), color: "#ff4d5e" },
 ];
 
 /** Which stage the 3D scene should highlight right now, and how far the run has progressed. */
@@ -67,7 +67,7 @@ const pointFrag = /* glsl */ `
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
     vec3 col = mix(uViolet, uCyan, step(0.68, vMix));
-    col = mix(col, vec3(0.85, 0.27, 0.94), step(0.94, vMix)); // magenta sparks
+    col = mix(col, vec3(1.0, 0.3, 0.36), step(0.94, vMix)); // magenta sparks
     gl_FragColor = vec4(col, smoothstep(0.5, 0.0, d) * vAlpha);
     #include <colorspace_fragment>
   }
@@ -115,8 +115,8 @@ function NeuralCore({ quality, reduced }) {
       uTime: { value: 0 },
       uActivity: { value: 0 },
       uPixelRatio: { value: 1 },
-      uViolet: { value: new Color("#8b5cf6") },
-      uCyan: { value: new Color("#00e5ff") },
+      uViolet: { value: new Color("#8f0d1b") },
+      uCyan: { value: new Color("#ff3347") },
     }),
     [],
   );
@@ -124,8 +124,8 @@ function NeuralCore({ quality, reduced }) {
     () => ({
       uTime: { value: 0 },
       uActivity: { value: 0 },
-      uViolet: { value: new Color("#7c3aed") },
-      uCyan: { value: new Color("#a5f3fc") },
+      uViolet: { value: new Color("#7a0b17") },
+      uCyan: { value: new Color("#ffc2c7") },
     }),
     [],
   );
@@ -181,11 +181,11 @@ function NeuralCore({ quality, reduced }) {
       {/* Processing core glowing at the centre */}
       <mesh ref={coreRef}>
         <icosahedronGeometry args={[0.2, 2]} />
-        <meshBasicMaterial color="#c4b5fd" transparent opacity={0.7} />
+        <meshBasicMaterial color="#ffb3ba" transparent opacity={0.7} />
       </mesh>
       <mesh>
         <sphereGeometry args={[0.7, 24, 24]} />
-        <meshBasicMaterial color="#7c3aed" transparent opacity={0.12} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#7a0b17" transparent opacity={0.12} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
     </group>
   );
@@ -243,7 +243,7 @@ function StageNode({ stage, index, reduced }) {
         <p
           ref={label}
           style={{ opacity: 0 }}
-          className="font-mono text-[10px] tracking-[0.25em] whitespace-nowrap text-fg uppercase [text-shadow:0_0_12px_rgba(139,92,246,0.9)]"
+          className="font-mono text-[10px] tracking-[0.25em] whitespace-nowrap text-fg uppercase [text-shadow:0_0_12px_rgba(143,13,27,0.9)]"
         >
           <span style={{ color: stage.color }}>{String(index + 1).padStart(2, "0")}</span>{" "}
           <span className="text-fg-subtle">—</span> {stage.label}
@@ -299,7 +299,7 @@ function WorkflowFlow({ reduced }) {
       {lineGeos.map((g, i) => (
         <line key={i} geometry={g}>
           <lineBasicMaterial
-            color={i === 1 ? "#a78bfa" : "#67e8f9"}
+            color={i === 1 ? "#ff8a94" : "#ff7a85"}
             transparent
             opacity={0.25}
             depthWrite={false}
@@ -312,7 +312,7 @@ function WorkflowFlow({ reduced }) {
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
         <pointsMaterial
-          color="#cffafe"
+          color="#ffe4e6"
           size={0.1}
           sizeAttenuation
           transparent
@@ -382,7 +382,7 @@ function AgentPanels() {
                   {i === step ? "▸ " : ""}
                   {s.tool}
                 </span>
-                <span className="text-violet-300">{s.stage}</span>
+                <span className="text-rose-300">{s.stage}</span>
               </p>
             ))}
             <PanelRow label="Total compute" value={`${total.toFixed(2)} ms`} />
@@ -424,8 +424,8 @@ function AgentPanels() {
 // ------------------------------------------------------------------ holographic staging
 
 const RING_CONFIG = [
-  { r: 3.5, tilt: [1.32, 0, 0.18], color: "#00e5ff", speed: 0.5 },
-  { r: 3.95, tilt: [1.45, 0, -0.32], color: "#8b5cf6", speed: -0.35 },
+  { r: 3.5, tilt: [1.32, 0, 0.18], color: "#ff3347", speed: 0.5 },
+  { r: 3.95, tilt: [1.45, 0, -0.32], color: "#8f0d1b", speed: -0.35 },
 ];
 
 /** Two tilted orbital rings circling the neural core, each carrying a light pulse. */
@@ -455,7 +455,7 @@ function OrbitalRings({ reduced }) {
         </mesh>
         <mesh ref={(el) => (pulses.current[i] = el)}>
           <sphereGeometry args={[0.07, 12, 12]} />
-          <meshBasicMaterial color="#e0f7ff" />
+          <meshBasicMaterial color="#ffe9eb" />
         </mesh>
       </group>
     </group>
@@ -468,11 +468,11 @@ function HoloPlatform({ reduced }) {
     <group>
       <mesh position-y={0.16}>
         <cylinderGeometry args={[3.9, 4.1, 0.3, 96, 1, true]} />
-        <meshBasicMaterial color="#2563ff" transparent opacity={0.16} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#a50f1e" transparent opacity={0.16} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
       <mesh position-y={0.32} rotation-x={-Math.PI / 2}>
         <circleGeometry args={[3.0, 96]} />
-        <meshBasicMaterial color="#2563ff" transparent opacity={0.08} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#a50f1e" transparent opacity={0.08} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
       <HoloRing
         y={0.33}
@@ -481,7 +481,7 @@ function HoloPlatform({ reduced }) {
         dashes={48}
         fill={0.6}
         speed={0.12}
-        color="#00e5ff"
+        color="#ff3347"
         opacity={0.9}
         reduced={reduced}
       />
@@ -492,7 +492,7 @@ function HoloPlatform({ reduced }) {
         dashes={1}
         fill={1}
         speed={-0.08}
-        color="#00e5ff"
+        color="#ff3347"
         opacity={0.55}
         reduced={reduced}
       />
@@ -503,7 +503,7 @@ function HoloPlatform({ reduced }) {
         dashes={96}
         fill={0.45}
         speed={0.05}
-        color="#2563ff"
+        color="#a50f1e"
         opacity={0.75}
         reduced={reduced}
       />
@@ -514,24 +514,24 @@ function HoloPlatform({ reduced }) {
         dashes={1}
         fill={1}
         speed={0.04}
-        color="#8b5cf6"
+        color="#8f0d1b"
         opacity={0.6}
         reduced={reduced}
       />
       {/* Light cone from the platform up into the core */}
       <mesh position-y={1.15}>
         <cylinderGeometry args={[0.9, 2.6, 1.7, 48, 1, true]} />
-        <meshBasicMaterial color="#00e5ff" transparent opacity={0.07} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#ff3347" transparent opacity={0.07} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
       <mesh position-y={1.15}>
         <cylinderGeometry args={[1.2, 3.0, 1.7, 48, 1, true]} />
-        <meshBasicMaterial color="#8b5cf6" transparent opacity={0.05} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#8f0d1b" transparent opacity={0.05} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
     </group>
   );
 }
 
-const HALO_PALETTE = ["#00e5ff", "#2563ff", "#8b5cf6", "#d946ef"].map((c) => new Color(c));
+const HALO_PALETTE = ["#ff3347", "#a50f1e", "#8f0d1b", "#ff4d5e"].map((c) => new Color(c));
 
 /** A loose shell of drifting particles around the core. */
 function ParticleHalo({ count, reduced }) {
@@ -574,11 +574,11 @@ function ParticleHalo({ count, reduced }) {
 }
 
 const SHAPES = [
-  { r: 0.22, p: [-3.6, 5.6, -2.2], c: "#00e5ff" },
-  { r: 0.16, p: [3.4, 6.0, -2.6], c: "#8b5cf6" },
-  { r: 0.18, p: [-5.6, 3.2, -1.5], c: "#2563ff" },
-  { r: 0.14, p: [5.9, 3.0, -1.8], c: "#d946ef" },
-  { r: 0.2, p: [0.4, 7.4, -3.4], c: "#00e5ff" },
+  { r: 0.22, p: [-3.6, 5.6, -2.2], c: "#ff3347" },
+  { r: 0.16, p: [3.4, 6.0, -2.6], c: "#8f0d1b" },
+  { r: 0.18, p: [-5.6, 3.2, -1.5], c: "#a50f1e" },
+  { r: 0.14, p: [5.9, 3.0, -1.8], c: "#ff4d5e" },
+  { r: 0.2, p: [0.4, 7.4, -3.4], c: "#ff3347" },
 ];
 
 /** Small wireframe polyhedra drifting around the exhibit. */
@@ -605,7 +605,7 @@ function FloatingGeometry({ reduced }) {
 export default function AgentExhibit({ quality, reduced }) {
   const high = quality === "high";
   return (
-    <Exhibit ex={EX} index={1} radius={6.2} hitHeight={6.5} color="#8b5cf6" reduced={reduced} panels={<AgentPanels />}>
+    <Exhibit ex={EX} index={1} radius={6.2} hitHeight={6.5} color="#8f0d1b" reduced={reduced} panels={<AgentPanels />}>
       <HoloPlatform reduced={reduced} />
       <NeuralCore quality={quality} reduced={reduced} />
       <OrbitalRings reduced={reduced} />

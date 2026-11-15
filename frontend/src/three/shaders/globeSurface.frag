@@ -40,7 +40,7 @@ void main() {
   col += uGrid * grid * 0.12 * revealed;
   col += uRim * fres * 0.65 * revealed;
   col += uRim * scan * 0.16 * revealed;
-  col += vec3(0.55, 0.9, 1.0) * edgeGlow * 1.4;
+  col += vec3(1.0, 0.36, 0.42) * edgeGlow * 1.4;
 
   gl_FragColor = vec4(col, 1.0);
   #include <colorspace_fragment>

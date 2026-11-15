@@ -90,7 +90,7 @@ export default function LabSection() {
             return p ? (
               <span key={slug}>
                 {i > 0 && " · "}
-                <Link to={`/projects/${slug}`} className="text-cyan-200 hover:underline">
+                <Link to={`/projects/${slug}`} className="text-red-200 hover:underline">
                   {p.title}
                 </Link>
               </span>

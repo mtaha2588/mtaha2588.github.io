@@ -58,7 +58,7 @@ export default function ContactBeacon({ reduced }) {
         dashes={48}
         fill={0.5}
         speed={0.05}
-        color="#22d3ee"
+        color="#ff2a3d"
         opacity={0.7}
         reduced={reduced}
       />
@@ -69,7 +69,7 @@ export default function ContactBeacon({ reduced }) {
         dashes={1}
         fill={1}
         speed={-0.03}
-        color="#8b5cf6"
+        color="#8f0d1b"
         opacity={0.4}
         reduced={reduced}
       />
@@ -77,12 +77,12 @@ export default function ContactBeacon({ reduced }) {
       {/* Spire */}
       <mesh position-y={TOP / 2}>
         <cylinderGeometry args={[0.04, 0.22, TOP, 12, 1, true]} />
-        <meshBasicMaterial color="#38bdf8" {...add} opacity={0.5} wireframe />
+        <meshBasicMaterial color="#ff5563" {...add} opacity={0.5} wireframe />
       </mesh>
       {[0.25, 0.5, 0.75].map((f) => (
         <mesh key={f} position-y={TOP * f} rotation-x={Math.PI / 2}>
           <torusGeometry args={[0.6 - f * 0.35, 0.01, 6, 48]} />
-          <meshBasicMaterial color="#67e8f9" {...add} opacity={0.7} />
+          <meshBasicMaterial color="#ff7a85" {...add} opacity={0.7} />
         </mesh>
       ))}
 
@@ -90,7 +90,7 @@ export default function ContactBeacon({ reduced }) {
       <group ref={crystal} position-y={TOP}>
         <mesh scale={[1, 1.5, 1]}>
           <octahedronGeometry args={[0.45, 0]} />
-          <meshBasicMaterial color="#a5f3fc" wireframe {...add} opacity={0.9} />
+          <meshBasicMaterial color="#ffc2c7" wireframe {...add} opacity={0.9} />
         </mesh>
         <mesh>
           <sphereGeometry args={[0.16, 16, 16]} />
@@ -101,21 +101,21 @@ export default function ContactBeacon({ reduced }) {
       {/* Upward transmission beam */}
       <mesh position-y={TOP + 9}>
         <cylinderGeometry args={[0.04, 0.12, 18, 8, 1, true]} />
-        <meshBasicMaterial color="#22d3ee" {...add} opacity={0.18} />
+        <meshBasicMaterial color="#ff2a3d" {...add} opacity={0.18} />
       </mesh>
 
       {/* Signal waves around the crystal */}
       {[0, 1, 2, 3].map((i) => (
         <mesh key={i} ref={(el) => (waves.current[i] = el)} position-y={TOP} rotation-x={-Math.PI / 2}>
           <ringGeometry args={[0.98, 1, 96]} />
-          <meshBasicMaterial color={i % 2 ? "#8b5cf6" : "#22d3ee"} {...add} side={DoubleSide} />
+          <meshBasicMaterial color={i % 2 ? "#8f0d1b" : "#ff2a3d"} {...add} side={DoubleSide} />
         </mesh>
       ))}
 
       {/* Burst on a successful submission */}
       <mesh ref={burst} position-y={TOP} rotation-x={-Math.PI / 2} visible={false}>
         <ringGeometry args={[0.9, 1, 128]} />
-        <meshBasicMaterial color="#a5f3fc" {...add} side={DoubleSide} />
+        <meshBasicMaterial color="#ffc2c7" {...add} side={DoubleSide} />
       </mesh>
     </EnvGroup>
   );

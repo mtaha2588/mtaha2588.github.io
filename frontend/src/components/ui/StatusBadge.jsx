@@ -4,8 +4,8 @@
  */
 const STYLES = {
   Live: { dot: "bg-signal", text: "text-emerald-300", ring: "border-emerald-400/30 bg-emerald-400/10" },
-  "In Development": { dot: "bg-cyan", text: "text-cyan-200", ring: "border-cyan/30 bg-cyan/10" },
-  Prototype: { dot: "bg-violet", text: "text-violet-200", ring: "border-violet/35 bg-violet/10" },
+  "In Development": { dot: "bg-cyan", text: "text-red-200", ring: "border-cyan/30 bg-cyan/10" },
+  Prototype: { dot: "bg-violet", text: "text-rose-200", ring: "border-violet/35 bg-violet/10" },
   Concept: { dot: "bg-fg-subtle", text: "text-fg-muted", ring: "border-line-strong bg-white/5" },
 };
 

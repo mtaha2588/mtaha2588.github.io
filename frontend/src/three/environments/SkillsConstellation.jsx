@@ -70,7 +70,7 @@ function Links() {
     return { positions: new Float32Array(pos), ts: new Float32Array(t), seeds: new Float32Array(s) };
   }, []);
   const uniforms = useMemo(
-    () => ({ uTime: { value: 0 }, uColor: { value: new Color("#67e8f9") }, uOpacity: { value: 1 } }),
+    () => ({ uTime: { value: 0 }, uColor: { value: new Color("#ff7a85") }, uOpacity: { value: 1 } }),
     [],
   );
   useFrame((state) => {
@@ -131,10 +131,10 @@ function AreaNode({ area, position }) {
             <group key={skill} position={[Math.cos(a) * 1.25, Math.sin(a) * 1.25, 0]}>
               <mesh>
                 <sphereGeometry args={[0.075, 10, 10]} />
-                <meshBasicMaterial color="#e0f2fe" {...add} opacity={dimmed ? 0.25 : 0.9} />
+                <meshBasicMaterial color="#ffe4e6" {...add} opacity={dimmed ? 0.25 : 0.9} />
               </mesh>
               {selected && (
-                <NearLabel position={[0, -0.28, 0]} near={40} className="!text-[9px] !tracking-[0.12em] text-cyan-100">
+                <NearLabel position={[0, -0.28, 0]} near={40} className="!text-[9px] !tracking-[0.12em] text-red-100">
                   {skill}
                 </NearLabel>
               )}
@@ -173,7 +173,7 @@ export default function SkillsConstellation() {
       <group ref={group}>
         <mesh>
           <icosahedronGeometry args={[0.6, 1]} />
-          <meshBasicMaterial color="#a5f3fc" wireframe {...add} opacity={0.6} />
+          <meshBasicMaterial color="#ffc2c7" wireframe {...add} opacity={0.6} />
         </mesh>
         <Links />
         {SKILL_AREAS.map((area, i) => (

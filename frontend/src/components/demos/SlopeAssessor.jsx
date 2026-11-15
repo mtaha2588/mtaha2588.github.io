@@ -16,8 +16,8 @@ const DIRS = [
 ];
 const LEVEL_STYLE = {
   low: "border-emerald-400/30 bg-emerald-400/10 text-emerald-200",
-  elevated: "border-cyan/30 bg-cyan/10 text-cyan-100",
-  high: "border-violet/40 bg-violet/15 text-violet-100",
+  elevated: "border-cyan/30 bg-cyan/10 text-red-100",
+  high: "border-violet/40 bg-violet/15 text-rose-100",
 };
 
 export default function SlopeAssessor() {
@@ -102,7 +102,7 @@ export default function SlopeAssessor() {
                 key={c.id}
                 title={`${c.label}: ${c.share_pct}%`}
                 style={{ width: `${c.share_pct}%` }}
-                className={["bg-sky-700", "bg-cyan-500", "bg-violet-500", "bg-indigo-300"][c.id]}
+                className={["bg-red-700", "bg-red-500", "bg-rose-500", "bg-rose-300"][c.id]}
               />
             ))}
           </div>
@@ -196,7 +196,7 @@ export default function SlopeAssessor() {
             {result.factors.map((f) => (
               <li key={f.key} className="flex gap-2 text-sm">
                 {f.present ? (
-                  <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-violet-300" aria-label="Present" />
+                  <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-rose-300" aria-label="Present" />
                 ) : (
                   <Circle size={16} className="mt-0.5 shrink-0 text-fg-subtle" aria-label="Not present" />
                 )}

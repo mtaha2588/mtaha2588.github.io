@@ -46,7 +46,7 @@ const frag = /* glsl */ `
 export default function GroundGrid({ y = -5.5 }) {
   const material = useRef();
   const uniforms = useMemo(
-    () => ({ uColor: { value: new Color("#3b82f6") }, uGrid: { value: 0 }, uTime: { value: 0 } }),
+    () => ({ uColor: { value: new Color("#d4192a") }, uGrid: { value: 0 }, uTime: { value: 0 } }),
     [],
   );
 

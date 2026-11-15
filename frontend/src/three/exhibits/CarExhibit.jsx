@@ -13,8 +13,8 @@ import { EXHIBITS } from "./layout";
 import { buildCar, buildWheelLines } from "./carGeometry";
 
 const EX = EXHIBITS.car;
-const TEAL = "#5eead4";
-const STAGE_COLORS = { Hot: "#c084fc", Warm: "#22d3ee", Nurture: "#3b82f6" };
+const TEAL = "#ff6b78";
+const STAGE_COLORS = { Hot: "#ff9aa3", Warm: "#ff2a3d", Nurture: "#d4192a" };
 
 const money = (n) => `$${n.toLocaleString("en-US")}`;
 
@@ -32,7 +32,7 @@ function HoloCar({ type, scale = 1, opacity = 1, mirrored = false, reduced, high
     () => ({
       surface: createHoloSurface({ color: TEAL, opacity: 0.75 * opacity, range }),
       lines: createHoloLines({ color: TEAL, opacity: 0.6 * opacity, range }),
-      wheels: createHoloLines({ color: "#99f6e4", opacity: 0.7 * opacity, range }),
+      wheels: createHoloLines({ color: "#ffc2c7", opacity: 0.7 * opacity, range }),
     }),
     [opacity, range],
   );
@@ -96,8 +96,8 @@ const floorFrag = /* glsl */ `
     vec2 g = abs(fract(vP / 1.2 - 0.5) - 0.5) / fwidth(vP / 1.2);
     float grid = (1.0 - min(min(g.x, g.y), 1.0)) * 0.12;
     float run = exp(-pow(mod(vP.x - uTime * 2.0, 14.0) - 7.0, 2.0) * 0.5) * lanes;
-    vec3 base = vec3(0.01, 0.04, 0.05);
-    vec3 col = base + vec3(0.37, 0.92, 0.83) * (lanes * 0.5 + grid + run);
+    vec3 base = vec3(0.03, 0.01, 0.012);
+    vec3 col = base + vec3(1.0, 0.18, 0.26) * (lanes * 0.5 + grid + run);
     // Mostly opaque so the mirrored car underneath reads as a soft reflection.
     gl_FragColor = vec4(col, fade * 0.82);
     #include <colorspace_fragment>
@@ -190,7 +190,7 @@ function Miniature({ vehicle, position, faceAngle, selected, reduced }) {
         dashes={20}
         fill={0.5}
         speed={0.1}
-        color={selected ? "#c084fc" : TEAL}
+        color={selected ? "#ff9aa3" : TEAL}
         opacity={0.7}
         intensity={glow}
         reduced={reduced}
@@ -218,7 +218,7 @@ function Miniature({ vehicle, position, faceAngle, selected, reduced }) {
         <p
           ref={label}
           style={{ opacity: 0 }}
-          className={`text-center font-mono text-[9px] tracking-wider whitespace-nowrap uppercase ${selected ? "text-violet-200" : "text-teal-100/80"}`}
+          className={`text-center font-mono text-[9px] tracking-wider whitespace-nowrap uppercase ${selected ? "text-rose-200" : "text-red-100/80"}`}
         >
           {vehicle.name}
           <br />
@@ -402,7 +402,7 @@ function CarPanels() {
             <PanelRow label="Total demo leads" value={pipeline.total_leads} />
             <PanelRow label="Avg score" value={pipeline.average_score ?? "–"} />
             {lastLead && (
-              <p className="mt-1 text-violet-200">
+              <p className="mt-1 text-rose-200">
                 Latest: score {lastLead.score} → {lastLead.stage}
               </p>
             )}
@@ -454,7 +454,7 @@ export default function CarExhibit({ quality, reduced }) {
         dashes={1}
         fill={1}
         speed={-0.03}
-        color="#99f6e4"
+        color="#ffc2c7"
         opacity={0.45}
         reduced={reduced}
       />

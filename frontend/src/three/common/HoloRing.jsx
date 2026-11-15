@@ -38,7 +38,7 @@ export default function HoloRing({
   dashes = 64,
   fill = 0.55,
   speed = 0.05,
-  color = "#22d3ee",
+  color = "#ff2a3d",
   opacity = 0.8,
   intensity = 1,
   y = 0,

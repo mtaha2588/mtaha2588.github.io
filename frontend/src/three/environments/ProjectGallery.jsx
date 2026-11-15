@@ -28,7 +28,7 @@ const W = 5.2; // screen size in world units (16:10, matching the screenshots)
 const H = 3.25;
 const NEAR = 42; // the gallery wakes up when the camera is closer than this (phones stand further back)
 
-const ACCENT = { cyan: "#22d3ee", violet: "#a78bfa", electric: "#4f8cff" };
+const ACCENT = { cyan: "#ff2a3d", violet: "#ff8a94", electric: "#e11d2e" };
 
 /*
  * Hologram screen: the screenshot with a light holographic tint, scan lines,
@@ -91,11 +91,11 @@ function posterTexture(project, accent) {
   c.height = 600;
   const g = c.getContext("2d");
   const grad = g.createLinearGradient(0, 0, 960, 600);
-  grad.addColorStop(0, "#07102a");
-  grad.addColorStop(1, "#0b0720");
+  grad.addColorStop(0, "#120608");
+  grad.addColorStop(1, "#0b0b0c");
   g.fillStyle = grad;
   g.fillRect(0, 0, 960, 600);
-  g.strokeStyle = "rgba(148,175,255,0.08)";
+  g.strokeStyle = "rgba(255,255,255,0.08)";
   for (let x = 0; x <= 960; x += 40) g.strokeRect(x, 0, 0.5, 600);
   for (let y = 0; y <= 600; y += 40) g.strokeRect(0, y, 960, 0.5);
   const glow = g.createRadialGradient(720, 170, 10, 720, 170, 380);
@@ -107,8 +107,8 @@ function posterTexture(project, accent) {
   g.fillStyle = accent;
   g.font = "600 24px 'JetBrains Mono', Consolas, monospace";
   g.fillText(String(project.category || "Project").toUpperCase(), 64, 110);
-  g.fillStyle = "#e6ecf8";
-  g.font = "700 58px 'Space Grotesk', 'Segoe UI', sans-serif";
+  g.fillStyle = "#f2f2f3";
+  g.font = "700 58px 'Unbounded Variable', 'Segoe UI', sans-serif";
   const words = project.title.split(" ");
   let line = "";
   let y = 200;
@@ -121,7 +121,7 @@ function posterTexture(project, accent) {
     } else line = test;
   }
   g.fillText(line, 64, y);
-  g.fillStyle = "#9aa7c2";
+  g.fillStyle = "#a3a3ab";
   g.font = "400 28px Inter, 'Segoe UI', sans-serif";
   (project.highlights || []).slice(0, 3).forEach((h, i) => g.fillText(`• ${h}`, 64, y + 80 + i * 44));
   g.strokeStyle = accent;
@@ -326,7 +326,7 @@ export default function ProjectGallery({ reduced = false }) {
       {/* Projector platform */}
       <group position={[0, -1.2, -0.6]}>
         <HoloRing radius={9.5} width={0.03} dashes={96} reduced={reduced} opacity={0.6} />
-        <HoloRing radius={7.6} width={0.02} dashes={48} speed={-0.04} color="#a78bfa" reduced={reduced} opacity={0.5} />
+        <HoloRing radius={7.6} width={0.02} dashes={48} speed={-0.04} color="#ff8a94" reduced={reduced} opacity={0.5} />
       </group>
     </EnvGroup>
   );

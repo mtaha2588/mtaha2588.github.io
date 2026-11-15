@@ -76,7 +76,7 @@ export default function Hud() {
           >
             <span className="gradient-border relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-ink-850/80 font-display text-sm font-bold text-fg backdrop-blur">
               {profile.initials}
-              <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-cyan shadow-[0_0_10px_2px_rgba(34,211,238,0.6)]" />
+              <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-cyan shadow-[0_0_10px_2px_rgba(255,42,61,0.6)]" />
             </span>
             <span className="hidden flex-col leading-tight sm:flex">
               <span className="font-mono text-[10px] tracking-[0.3em] text-cyan">AI INTELLIGENCE UNIVERSE</span>
@@ -97,7 +97,7 @@ export default function Hud() {
                   {activeId === s.id && (
                     <m.span
                       layoutId="hud-pill"
-                      className="absolute inset-0 -z-10 rounded-full border border-holo-cyan/50 bg-gradient-to-r from-holo-cyan/20 via-holo-blue/20 to-holo-purple/25 shadow-[0_0_18px_-2px_rgba(0,229,255,0.55)]"
+                      className="absolute inset-0 -z-10 rounded-full border border-holo-cyan/50 bg-gradient-to-r from-holo-cyan/20 via-holo-blue/20 to-holo-purple/25 shadow-[0_0_18px_-2px_rgba(255,51,71,0.55)]"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -160,7 +160,7 @@ export default function Hud() {
         <button
           type="button"
           onClick={() => prefillContact()}
-          className="btn-primary fixed right-4 bottom-4 z-40 !px-5 !py-3 shadow-[0_10px_30px_-8px_rgba(0,229,255,0.6)] md:hidden"
+          className="btn-primary fixed right-4 bottom-4 z-40 !px-5 !py-3 shadow-[0_10px_30px_-8px_rgba(255,51,71,0.6)] md:hidden"
         >
           <MessageSquareQuote size={18} aria-hidden="true" />
           Hire me

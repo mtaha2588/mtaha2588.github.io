@@ -50,7 +50,7 @@ function mulberry32(seed) {
   };
 }
 
-const ARC_COLORS = ["34,211,238", "79,140,255", "139,92,246"];
+const ARC_COLORS = ["255,42,61", "225,29,46", "143,13,27"];
 
 export default function NetworkGlobe({ className = "" }) {
   const canvasRef = useRef(null);
@@ -133,9 +133,9 @@ export default function NetworkGlobe({ className = "" }) {
 
       // Atmosphere glow
       const glow = ctx.createRadialGradient(cx, cy, radius * 0.75, cx, cy, radius * 1.45);
-      glow.addColorStop(0, "rgba(79,140,255,0.16)");
-      glow.addColorStop(0.5, "rgba(139,92,246,0.06)");
-      glow.addColorStop(1, "rgba(4,6,13,0)");
+      glow.addColorStop(0, "rgba(225,29,46,0.16)");
+      glow.addColorStop(0.5, "rgba(143,13,27,0.06)");
+      glow.addColorStop(1, "rgba(7,7,7,0)");
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(cx, cy, radius * 1.45, 0, TAU);
@@ -143,13 +143,13 @@ export default function NetworkGlobe({ className = "" }) {
 
       // Sphere body
       const body = ctx.createRadialGradient(cx - radius * 0.35, cy - radius * 0.4, radius * 0.1, cx, cy, radius);
-      body.addColorStop(0, "rgba(30,48,92,0.55)");
-      body.addColorStop(1, "rgba(7,11,23,0.9)");
+      body.addColorStop(0, "rgba(92,30,36,0.55)");
+      body.addColorStop(1, "rgba(23,7,8,0.9)");
       ctx.fillStyle = body;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, TAU);
       ctx.fill();
-      ctx.strokeStyle = "rgba(103,232,249,0.22)";
+      ctx.strokeStyle = "rgba(255,122,133,0.22)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -158,7 +158,7 @@ export default function NetworkGlobe({ className = "" }) {
         const p = rotate(d);
         if (p.z < -0.15) continue;
         const depth = (p.z + 1) / 2;
-        ctx.fillStyle = `rgba(160,200,255,${0.08 + depth * 0.55})`;
+        ctx.fillStyle = `rgba(255,160,169,${0.08 + depth * 0.55})`;
         const size = 0.5 + depth * 1.1;
         ctx.fillRect(cx + p.x * radius - size / 2, cy + p.y * radius - size / 2, size, size);
       }
@@ -205,11 +205,11 @@ export default function NetworkGlobe({ className = "" }) {
         if (p.z < 0) continue;
         const px = cx + p.x * radius;
         const py = cy + p.y * radius;
-        ctx.fillStyle = "rgba(230,241,255,0.95)";
+        ctx.fillStyle = "rgba(255,240,241,0.95)";
         ctx.beginPath();
         ctx.arc(px, py, 1.8 + p.z * 1.2, 0, TAU);
         ctx.fill();
-        ctx.strokeStyle = `rgba(34,211,238,${0.25 + p.z * 0.35})`;
+        ctx.strokeStyle = `rgba(255,42,61,${0.25 + p.z * 0.35})`;
         ctx.beginPath();
         ctx.arc(px, py, 5 + p.z * 2, 0, TAU);
         ctx.stroke();

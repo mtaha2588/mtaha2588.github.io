@@ -7,9 +7,9 @@ import { useId } from "react";
  */
 
 const ACCENTS = {
-  cyan: ["#22d3ee", "#4f8cff"],
-  violet: ["#8b5cf6", "#22d3ee"],
-  electric: ["#4f8cff", "#8b5cf6"],
+  cyan: ["#ff2a3d", "#e11d2e"],
+  violet: ["#8f0d1b", "#ff2a3d"],
+  electric: ["#e11d2e", "#8f0d1b"],
 };
 
 function TerrainArt({ c1, c2, uid }) {
@@ -51,7 +51,7 @@ function TerrainArt({ c1, c2, uid }) {
           <circle cx={x} cy={y} r="3" fill={color} />
         </g>
       ))}
-      <g fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#9aa7c2">
+      <g fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#a3a3ab">
         <text x="16" y="222">
           DEM · SLOPE · ASPECT
         </text>
@@ -90,8 +90,8 @@ function AgentArt({ c1, c2 }) {
       ))}
       <circle cx={cx} cy={cy} r="54" fill="none" stroke={c1} strokeOpacity="0.15" />
       <circle cx={cx} cy={cy} r="36" fill="none" stroke={c2} strokeOpacity="0.25" />
-      <circle cx={cx} cy={cy} r="24" fill="#0b1222" stroke={c1} strokeOpacity="0.8" />
-      <text x={cx} y={cy + 3.5} textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#e6ecf8">
+      <circle cx={cx} cy={cy} r="24" fill="#111113" stroke={c1} strokeOpacity="0.8" />
+      <text x={cx} y={cy + 3.5} textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#f2f2f3">
         LLM
       </text>
       {nodes.map((n, i) => (
@@ -102,7 +102,7 @@ function AgentArt({ c1, c2 }) {
             width="52"
             height="22"
             rx="6"
-            fill="#0b1222"
+            fill="#111113"
             stroke={i % 2 ? c2 : c1}
             strokeOpacity="0.5"
           />
@@ -112,7 +112,7 @@ function AgentArt({ c1, c2 }) {
             textAnchor="middle"
             fontFamily="JetBrains Mono, monospace"
             fontSize="8"
-            fill="#c7d3ee"
+            fill="#d4d4d8"
           >
             {n.label}
           </text>
@@ -131,8 +131,8 @@ function PipelineArt({ c1, c2 }) {
         const x = 22 + i * 92;
         return (
           <g key={label}>
-            <rect x={x} y="28" width="80" height="176" rx="8" fill="#0a1020" stroke="#94afff" strokeOpacity="0.12" />
-            <text x={x + 10} y="46" fontFamily="JetBrains Mono, monospace" fontSize="7.5" fill="#9aa7c2">
+            <rect x={x} y="28" width="80" height="176" rx="8" fill="#0f0f10" stroke="#c9c9cf" strokeOpacity="0.12" />
+            <text x={x + 10} y="46" fontFamily="JetBrains Mono, monospace" fontSize="7.5" fill="#a3a3ab">
               {label}
             </text>
             {Array.from({ length: cards[i] }, (_, j) => (
@@ -143,13 +143,13 @@ function PipelineArt({ c1, c2 }) {
                   width="64"
                   height="36"
                   rx="5"
-                  fill="#101a33"
-                  stroke={j === 0 ? (i % 2 ? c2 : c1) : "#94afff"}
+                  fill="#141416"
+                  stroke={j === 0 ? (i % 2 ? c2 : c1) : "#c9c9cf"}
                   strokeOpacity={j === 0 ? 0.6 : 0.15}
                 />
-                <rect x={x + 15} y={67 + j * 44} width="34" height="4" rx="2" fill="#c7d3ee" opacity="0.6" />
-                <rect x={x + 15} y={77 + j * 44} width="48" height="3" rx="1.5" fill="#9aa7c2" opacity="0.35" />
-                <rect x={x + 15} y={84 + j * 44} width="26" height="3" rx="1.5" fill="#9aa7c2" opacity="0.35" />
+                <rect x={x + 15} y={67 + j * 44} width="34" height="4" rx="2" fill="#d4d4d8" opacity="0.6" />
+                <rect x={x + 15} y={77 + j * 44} width="48" height="3" rx="1.5" fill="#a3a3ab" opacity="0.35" />
+                <rect x={x + 15} y={84 + j * 44} width="26" height="3" rx="1.5" fill="#a3a3ab" opacity="0.35" />
               </g>
             ))}
           </g>
@@ -189,13 +189,13 @@ export default function ProjectVisual({ project, className = "" }) {
         </linearGradient>
         <radialGradient id={`${uid}-bg`} cx="0.5" cy="0.35" r="0.8">
           <stop offset="0" stopColor={c1} stopOpacity="0.16" />
-          <stop offset="1" stopColor="#04060d" stopOpacity="0" />
+          <stop offset="1" stopColor="#070707" stopOpacity="0" />
         </radialGradient>
         <pattern id={`${uid}-grid`} width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M20 0H0V20" fill="none" stroke="#94afff" strokeOpacity="0.06" />
+          <path d="M20 0H0V20" fill="none" stroke="#c9c9cf" strokeOpacity="0.06" />
         </pattern>
       </defs>
-      <rect width="400" height="240" fill="#070b17" />
+      <rect width="400" height="240" fill="#0b0b0c" />
       <rect width="400" height="240" fill={`url(#${uid}-grid)`} />
       <rect width="400" height="240" fill={`url(#${uid}-bg)`} />
       <Art c1={c1} c2={c2} uid={uid} />

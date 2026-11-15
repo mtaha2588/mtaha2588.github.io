@@ -60,24 +60,24 @@ const terrainFrag = /* glsl */ `
     float diffuse = max(dot(n, normalize(vec3(-0.45, 0.85, 0.35))), 0.0) * 0.85 + 0.15;
 
     // Rock → snow by altitude and flatness (snow settles on gentler, higher ground).
-    vec3 rock = mix(vec3(0.02, 0.06, 0.14), vec3(0.08, 0.2, 0.36), vH);
+    vec3 rock = mix(vec3(0.03, 0.03, 0.035), vec3(0.12, 0.11, 0.12), vH);
     float snow = smoothstep(0.52, 0.86, vH + (n.y - 0.78) * 0.5);
-    vec3 col = mix(rock, vec3(0.72, 0.84, 1.0), snow * 0.85) * diffuse;
+    vec3 col = mix(rock, vec3(0.86, 0.87, 0.9), snow * 0.85) * diffuse;
 
     // Survey wireframe on the DEM cell grid, plus elevation contours.
     float grid = max(aaLine(vUv.x * uCells), aaLine(vUv.y * uCells));
     float contour = aaLine(vH * 16.0);
-    col += vec3(0.12, 0.5, 0.95) * grid * 0.28;
-    col += vec3(0.2, 0.85, 1.0) * contour * 0.4;
+    col += vec3(0.9, 0.1, 0.16) * grid * 0.28;
+    col += vec3(1.0, 0.24, 0.3) * contour * 0.4;
 
     // Avalanche start-zone slopes (30–45°) from the backend's slope classification.
     float risk = smoothstep(0.35, 0.8, vRisk) * uRisk;
-    col = mix(col, col * 0.7 + vec3(0.55, 0.38, 0.95) * 0.4, risk * 0.55);
+    col = mix(col, col * 0.7 + vec3(1.0, 0.08, 0.14) * 0.4, risk * 0.55);
 
     // Satellite scan sweeping across the terrain.
     float sx = mod(uTime * 1.1, uRadius * 2.8) - uRadius * 1.4;
     float scan = exp(-pow((vPos.x - sx) * 2.4, 2.0));
-    col += vec3(0.35, 0.9, 1.0) * scan * 0.55;
+    col += vec3(1.0, 0.42, 0.46) * scan * 0.55;
 
     // Materialise from the ground up, and fade the edge into the void.
     float shown = smoothstep(uReveal * 1.1, uReveal * 1.1 - 0.06, vH);
@@ -146,15 +146,15 @@ function Pillar({ p, delay, reduced }) {
     <group position={p}>
       <mesh ref={beam} position-y={0.7}>
         <cylinderGeometry args={[0.025, 0.025, 1.4, 6, 1, true]} />
-        <meshBasicMaterial color="#c4b5fd" transparent depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#ffb3ba" transparent depthWrite={false} blending={AdditiveBlending} />
       </mesh>
       <mesh ref={cap} position-y={1.42}>
         <sphereGeometry args={[0.07, 12, 12]} />
-        <meshBasicMaterial color="#ede9fe" />
+        <meshBasicMaterial color="#ffe4e6" />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position-y={0.03}>
         <ringGeometry args={[0.12, 0.16, 24]} />
-        <meshBasicMaterial color="#a78bfa" transparent opacity={0.8} depthWrite={false} blending={AdditiveBlending} />
+        <meshBasicMaterial color="#ff8a94" transparent opacity={0.8} depthWrite={false} blending={AdditiveBlending} />
       </mesh>
     </group>
   );
@@ -209,7 +209,7 @@ function Terrain({ reduced }) {
 }
 
 function Mist() {
-  const tex = glowTexture("rgba(140,190,255,0.32)", "rgba(60,110,200,0.08)");
+  const tex = glowTexture("rgba(255,140,150,0.32)", "rgba(200,60,73,0.08)");
   const clouds = [
     [-3.8, 0.6, 2.2, 5],
     [3.6, 0.8, 1.4, 5.5],
@@ -247,12 +247,12 @@ function TerrainPanels() {
         {terrain.classes.map((c) => (
           <div key={c.id} className="py-0.5">
             <div className="flex justify-between">
-              <span className={c.id === 2 ? "text-violet-300" : "text-fg-subtle"}>{c.label}</span>
+              <span className={c.id === 2 ? "text-rose-300" : "text-fg-subtle"}>{c.label}</span>
               <span className="text-fg">{c.share_pct}%</span>
             </div>
             <div className="mt-0.5 h-1 rounded bg-white/5">
               <div
-                className={`h-1 rounded ${c.id === 2 ? "bg-violet-400" : "bg-cyan/60"}`}
+                className={`h-1 rounded ${c.id === 2 ? "bg-rose-400" : "bg-cyan/60"}`}
                 style={{ width: `${c.share_pct}%` }}
               />
             </div>
@@ -279,7 +279,7 @@ export default function AvalancheExhibit({ reduced }) {
       index={0}
       radius={6}
       hitHeight={5}
-      color="#22d3ee"
+      color="#ff2a3d"
       reduced={reduced}
       panels={
         <group position-y={0.35}>
@@ -297,7 +297,7 @@ export default function AvalancheExhibit({ reduced }) {
           dashes={1}
           fill={1}
           speed={0.06}
-          color="#38bdf8"
+          color="#ff5563"
           opacity={0.55}
           reduced={reduced}
         />
@@ -308,7 +308,7 @@ export default function AvalancheExhibit({ reduced }) {
           dashes={1}
           fill={1}
           speed={-0.045}
-          color="#22d3ee"
+          color="#ff2a3d"
           opacity={0.4}
           reduced={reduced}
         />
@@ -319,7 +319,7 @@ export default function AvalancheExhibit({ reduced }) {
           dashes={1}
           fill={1}
           speed={0.035}
-          color="#67e8f9"
+          color="#ff7a85"
           opacity={0.3}
           reduced={reduced}
         />
@@ -330,7 +330,7 @@ export default function AvalancheExhibit({ reduced }) {
           dashes={96}
           fill={0.35}
           speed={0.02}
-          color="#3b82f6"
+          color="#d4192a"
           opacity={0.6}
           reduced={reduced}
         />

@@ -58,7 +58,7 @@ export default function SkillsSection() {
                         used.map((p, i) => (
                           <span key={p.slug}>
                             {i > 0 && " · "}
-                            <Link to={`/projects/${p.slug}`} className="text-cyan-200 hover:underline">
+                            <Link to={`/projects/${p.slug}`} className="text-red-200 hover:underline">
                               {p.title}
                             </Link>
                           </span>

@@ -7,9 +7,9 @@ import { SAMPLE_INVENTORY } from "../../data/sampleInventory";
 import DemoShell, { ErrorNote, Field, OfflinePreview } from "./DemoShell";
 
 const STAGE_STYLE = {
-  Hot: "border-fuchsia-300/40 bg-fuchsia-400/10 text-fuchsia-100",
-  Warm: "border-cyan/40 bg-cyan/10 text-cyan-100",
-  Nurture: "border-blue-400/40 bg-blue-400/10 text-blue-100",
+  Hot: "border-rose-300/40 bg-rose-400/10 text-rose-100",
+  Warm: "border-cyan/40 bg-cyan/10 text-red-100",
+  Nurture: "border-red-400/40 bg-red-400/10 text-red-100",
 };
 const money = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
@@ -206,7 +206,7 @@ export default function LeadSimulator() {
                 {result.automation.map((a) => (
                   <li key={a.action} className="flex justify-between gap-2">
                     <span className="text-fg-muted">{a.action}</span>
-                    <span className="shrink-0 font-mono text-teal-200">{relative(a.when)}</span>
+                    <span className="shrink-0 font-mono text-red-200">{relative(a.when)}</span>
                   </li>
                 ))}
               </ul>

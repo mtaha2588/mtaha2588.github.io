@@ -58,7 +58,7 @@ export default function UniverseCanvas({ active = true }) {
       gl={{ antialias: !effects, powerPreference: "high-performance", alpha: false, stencil: false }}
       style={{ touchAction: focused ? "none" : "pan-y" }}
       onCreated={({ gl }) => {
-        gl.setClearColor("#02040a", 1);
+        gl.setClearColor("#050505", 1);
         // Performance auditing: open the site with ?stats to expose renderer.info in the console.
         if (new URLSearchParams(window.location.search).has("stats")) window.__aiuRenderer = gl;
       }}
