@@ -22,12 +22,9 @@ services:
         fromDatabase:
           name: ai-universe-db
           property: connectionString
-      # Your Vercel URL, e.g. https://your-portfolio.vercel.app (comma-separate several)
+      # The published site (GitHub Pages). Add more origins comma-separated.
       - key: CORS_ORIGINS
-        sync: false
-      # Optional: allow Vercel preview deployments, e.g. ^https://your-portfolio-[a-z0-9-]+\.vercel\.app$
-      - key: CORS_ORIGIN_REGEX
-        sync: false
+        value: https://mtaha2588.github.io
       # Random key protecting GET /api/contact/messages (shown in the Render dashboard)
       - key: ADMIN_API_KEY
         generateValue: true

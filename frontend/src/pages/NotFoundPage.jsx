@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { useSeo } from "../hooks/useSeo";
 import BackgroundCanvas from "../components/layout/BackgroundCanvas";
 
 export default function NotFoundPage() {
-  usePageTitle("Page not found");
+  useSeo({ title: "Page not found", path: "/404" });
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center px-4 text-center">
       <BackgroundCanvas />

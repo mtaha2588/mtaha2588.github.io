@@ -3,6 +3,8 @@ VALID = {
     "email": "Jordan@Example.com",
     "company": "Acme",
     "message": "Hi! I'd like to talk about a contract role building AI automation.",
+    "service": "AI Automation & Agents",
+    "budget": "$1,000 – $3,000",
     "elapsed_ms": 9000,
 }
 
@@ -26,8 +28,10 @@ def test_projects_list_and_detail(client):
     r = client.get("/api/projects")
     assert r.status_code == 200
     projects = r.json()["projects"]
-    assert len(projects) == 3
-    assert all(p["demo"] and p["demo"]["endpoints"] for p in projects)
+    assert len(projects) >= 3
+    with_demo = [p for p in projects if p["demo"]]
+    assert len(with_demo) == 3  # the three 3D exhibitions have live demo APIs
+    assert all(p["demo"]["endpoints"] for p in with_demo)
 
     slug = projects[0]["slug"]
     detail = client.get(f"/api/projects/{slug}").json()
@@ -45,6 +49,8 @@ def test_contact_saved_and_listed(client):
     latest = listed.json()[0]
     assert latest["email"] == "jordan@example.com"
     assert latest["name"] == "Jordan Lee"
+    assert latest["service"] == "AI Automation & Agents"
+    assert latest["budget"] == "$1,000 – $3,000"
 
 
 def test_contact_admin_requires_key(client):

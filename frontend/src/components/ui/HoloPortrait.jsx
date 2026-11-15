@@ -52,7 +52,8 @@ export default function HoloPortrait({ className = "", large = false }) {
   return (
     <figure ref={scene} className={`hp-scene ${className}`} onPointerMove={onMove} onPointerLeave={onLeave}>
       <motion.div
-        animate={reduce ? undefined : { y: [0, -6, 0] }}
+        // Gentle float on desktop only: on touch devices it would repaint the card every frame.
+        animate={reduce || !canTilt ? undefined : { y: [0, -6, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <motion.div className="hp-card" style={tilt ? { rotateX, rotateY } : undefined}>

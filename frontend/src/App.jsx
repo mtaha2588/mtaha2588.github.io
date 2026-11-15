@@ -1,16 +1,22 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode, Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import UniverseStage from "./components/universe/UniverseStage";
 import UniversePage from "./pages/UniversePage";
-import ProjectPage from "./pages/ProjectPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { trackPageView } from "./lib/analytics";
+
+// Case studies and notes (with the Markdown parser) load only when visited.
+const ProjectPage = lazy(() => import("./pages/ProjectPage"));
+const NotesPage = lazy(() => import("./pages/NotesPage"));
+const NotePage = lazy(() => import("./pages/NotePage"));
 
 /** Fades between pages and starts each new page at the top (or at its #hash). */
 function AnimatedRoutes() {
   const location = useLocation();
 
   useEffect(() => {
+    trackPageView(location.pathname);
     if (location.pathname === "/") return; // the universe page manages its own scroll
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -30,11 +36,15 @@ function AnimatedRoutes() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeInOut" }}
           >
-            <Routes location={location}>
-              <Route path="/" element={<UniversePage />} />
-              <Route path="/projects/:slug" element={<ProjectPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <Routes location={location}>
+                <Route path="/" element={<UniversePage />} />
+                <Route path="/projects/:slug" element={<ProjectPage />} />
+                <Route path="/notes" element={<NotesPage />} />
+                <Route path="/notes/:slug" element={<NotePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </StrictMode>
@@ -46,7 +56,7 @@ export default function App() {
   return (
     // reducedMotion="user": Framer Motion honours the OS "reduce motion" setting everywhere.
     <MotionConfig reducedMotion="user">
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "") || undefined}>
         <AnimatedRoutes />
       </BrowserRouter>
     </MotionConfig>

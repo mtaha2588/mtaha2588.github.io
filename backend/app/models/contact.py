@@ -17,6 +17,8 @@ class ContactMessage(Base):
     name: Mapped[str] = mapped_column(String(100))
     email: Mapped[str] = mapped_column(String(254), index=True)
     company: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    service: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    budget: Mapped[str | None] = mapped_column(String(40), nullable=True)
     message: Mapped[str] = mapped_column(Text)
     ip_address: Mapped[str | None] = mapped_column(String(64), nullable=True)
     user_agent: Mapped[str | None] = mapped_column(String(300), nullable=True)

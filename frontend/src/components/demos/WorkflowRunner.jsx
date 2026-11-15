@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader2, Play } from "lucide-react";
 import { exhibits, useExhibits } from "../../store/exhibits";
 import { demoApi } from "../../lib/demoApi";
-import DemoShell, { ErrorNote } from "./DemoShell";
+import DemoShell, { ErrorNote, OfflinePreview } from "./DemoShell";
 
 const TASKS = [
   { id: "inquiry_triage", label: "Inquiry triage", hint: "Classify, prioritise and route customer messages" },
@@ -57,7 +57,37 @@ export default function WorkflowRunner() {
   const finished = run && step >= run.steps.length - 1;
 
   return (
-    <DemoShell title="Live demo · Workflow agent" endpoint="POST /api/demos/automation-agent/run">
+    <DemoShell
+      title="Live demo · Workflow agent"
+      endpoint="POST /api/demos/automation-agent/run"
+      offlinePreview={
+        <OfflinePreview>
+          <p className="text-sm text-fg-muted">Sample run of the inquiry-triage workflow on five customer messages:</p>
+          <ol className="mt-3 space-y-1.5 text-xs">
+            {[
+              ["input", "ingest_messages", "5 messages ingested"],
+              ["processing", "classify_intent", "sales 1 · support 1 · billing 1 · partnership 1 · general 1"],
+              ["processing", "extract_signals", "1 urgent, 0 mention amounts"],
+              ["decision", "prioritize_and_route", "1 P1, 0 P2, 4 P3"],
+              ["output", "compose_report", "8-line markdown report"],
+            ].map(([stage, tool, out]) => (
+              <li key={tool} className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`rounded border px-1.5 py-0.5 font-mono text-[10px] tracking-wider uppercase ${STAGE_STYLE[stage]}`}
+                >
+                  {stage}
+                </span>
+                <span className="font-mono text-fg">{tool}</span>
+                <span className="text-fg-muted">→ {out}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-3 text-xs text-fg-subtle">
+            Live, each step is executed by the API and replayed on the 3D neural core.
+          </p>
+        </OfflinePreview>
+      }
+    >
       <fieldset>
         <legend className="sr-only">Workflow</legend>
         <div className="grid gap-2 sm:grid-cols-2">

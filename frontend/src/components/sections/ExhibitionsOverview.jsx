@@ -1,74 +1,54 @@
-import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
 import SectionHeading from "../ui/SectionHeading";
-import StatusBadge from "../ui/StatusBadge";
+import Reveal from "../ui/Reveal";
+import WorkCard from "../projects/WorkCard";
 import { useProjects } from "../../hooks/useProjects";
-import { scrollToSection } from "../../hooks/useScrollStations";
 import { EXHIBIT_LIST } from "../../three/exhibits/layout";
 import { exhibits, useExhibits } from "../../store/exhibits";
 
 /**
- * Station 1: the high establishing shot of all three exhibitions.
- * A compact index lets visitors jump to any of them; hovering an entry
- * lights up the matching pedestal in 3D.
+ * Station 2: every project as a card (thumbnail, status, stack,
+ * GitHub repository · Live demo · Case study). Projects with a 3D
+ * exhibition light up their pedestal when hovered, and "Try the live
+ * demo" flies to it.
  */
 export default function ExhibitionsOverview() {
   const { projects } = useProjects();
   const hovered = useExhibits((s) => s.hovered);
+  const exhibitFor = (slug) => EXHIBIT_LIST.find((e) => e.slug === slug);
+  // Projects with live demos first, then the rest in data order.
+  const ordered = [...projects].sort((a, b) => Number(!exhibitFor(a.slug)) - Number(!exhibitFor(b.slug)));
 
   return (
     <section
       id="projects"
-      data-station="1"
-      className="pointer-events-none relative flex min-h-[110svh] flex-col justify-end pt-28 pb-24"
+      data-station="2"
+      aria-labelledby="projects-title"
+      className="pointer-events-none relative pt-28 pb-24"
     >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto -mx-4 rounded-2xl bg-gradient-to-r from-ink-950/80 via-ink-950/50 to-transparent px-4 pt-4 sm:-mx-6 sm:px-6">
           <SectionHeading
-            eyebrow="Project Exhibitions"
-            title="Three projects. Three live systems."
-            description="Each exhibition is a 3D representation of the project, connected to a working demo API. Scroll to visit them in turn, or jump straight to one."
+            eyebrow="Work"
+            title={<span id="projects-title">Projects &amp; live demos</span>}
+            description="Every project with its real status. The first three have working demos you can try right here; each has a full case study."
           />
         </div>
-        <ol className="pointer-events-auto grid gap-3 md:grid-cols-3">
-          {EXHIBIT_LIST.map((ex, i) => {
-            const project = projects.find((p) => p.slug === ex.slug);
-            const active = hovered === ex.key;
+        <ul className="pointer-events-auto grid gap-4 lg:grid-cols-2">
+          {ordered.map((project, i) => {
+            const ex = exhibitFor(project.slug);
             return (
-              <motion.li
-                key={ex.key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-              >
-                <button
-                  type="button"
-                  onClick={() => scrollToSection(ex.sectionId)}
-                  onPointerEnter={() => exhibits.set({ hovered: ex.key })}
-                  onPointerLeave={() => exhibits.set({ hovered: null })}
-                  onFocus={() => exhibits.set({ hovered: ex.key })}
-                  onBlur={() => exhibits.set({ hovered: null })}
-                  className={`glass group flex w-full items-center gap-4 rounded-xl p-4 text-left transition-all ${active ? "border-cyan/50 bg-cyan/[0.06]" : ""}`}
-                >
-                  <span className="font-mono text-2xl font-medium text-cyan/80">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate font-display text-base font-semibold text-fg">
-                      {project?.title ?? ex.label}
-                    </span>
-                    <span className="mt-1 flex items-center gap-2">
-                      {project && <StatusBadge status={project.status} />}
-                    </span>
-                  </span>
-                  <ArrowRight
-                    size={18}
-                    className="shrink-0 text-fg-muted transition-transform group-hover:translate-x-1 group-hover:text-fg"
-                  />
-                </button>
-              </motion.li>
+              <Reveal as="li" key={project.slug} delay={(i % 2) * 0.08} className="flex">
+                <WorkCard
+                  project={project}
+                  index={i}
+                  exhibit={ex}
+                  active={ex && hovered === ex.key}
+                  onHover={ex ? (on) => exhibits.set({ hovered: on ? ex.key : null }) : undefined}
+                />
+              </Reveal>
             );
           })}
-        </ol>
+        </ul>
       </div>
     </section>
   );

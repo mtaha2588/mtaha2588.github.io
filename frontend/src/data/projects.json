@@ -1,47 +1,68 @@
 [
   {
     "slug": "avalanche-intelligence-platform",
-    "title": "Avalanche Intelligence Platform",
-    "tagline": "Machine learning and geospatial analysis for avalanche terrain awareness.",
+    "title": "Avalanche Risk Intelligence Portal",
+    "tagline": "A decision-support portal for avalanche situational awareness in northern Pakistan.",
     "category": "Machine Learning · Geospatial",
     "status": "In Development",
     "accent": "cyan",
     "featured": true,
-    "summary": "An AI-based platform that combines terrain models, satellite data and weather inputs to analyze avalanche-prone terrain and present the results on an interactive map.",
-    "highlights": ["ML terrain classification", "Satellite & DEM processing", "Interactive risk mapping"],
+    "summary": "A Flask-based portal for the Hindu Kush, Karakoram and Western Himalaya: 15-day season windows, an interactive map, study-area filtering, settlement and road exposure analysis, CSV/GeoJSON exports with provenance, and a drop-in slot for machine-learning predictions. Built for NDMA's Next Generation Technologies programme as decision support, not official warnings.",
+    "highlights": [
+      "Interactive risk map (MapLibre + OpenStreetMap)",
+      "15-day season windows and exposure analysis",
+      "CSV / GeoJSON exports, 15 automated tests"
+    ],
     "problem": "Avalanche risk depends on many interacting factors: slope angle, aspect, elevation, recent snowfall, wind loading and temperature. That information is spread across terrain models, satellite imagery and weather feeds in different formats and resolutions, which makes it hard to bring together into one clear, location-specific picture of where terrain is most susceptible.",
     "solution": "A Python data pipeline that ingests a Digital Elevation Model (DEM) and satellite data, derives terrain features such as slope, aspect and curvature, and combines them with weather variables. Supervised machine learning models (Random Forest and Support Vector Machine) are trained to classify terrain susceptibility, and the results are rendered as layers on an interactive web map so they can be explored visually.",
     "architecture": {
-      "overview": "The system is organised as a batch processing pipeline feeding a lightweight API and a map-based frontend. Heavy geospatial computation happens offline; the web layer only serves pre-computed results.",
+      "overview": "A Flask application with a small service layer and a dataset registry. Heavy geospatial work happens offline; the web layer serves filtered data, exports and a printable brief. Model outputs drop into a folder per 15-day window.",
       "layers": [
         {
-          "name": "Data Sources",
-          "items": ["Digital Elevation Model (DEM)", "Satellite imagery", "Weather observations"]
-        },
-        {
-          "name": "Processing",
+          "name": "Data registry",
           "items": [
-            "Raster preprocessing & reprojection",
-            "Terrain features: slope, aspect, curvature",
-            "Feature engineering"
+            "catalog.json: source, date, CRS, resolution, limitations per dataset",
+            "Study-area extents, settlements, incidents",
+            "OpenStreetMap roads via fetch script"
           ]
         },
         {
-          "name": "Machine Learning",
-          "items": ["Random Forest classifier", "SVM classifier", "Model evaluation & comparison"]
+          "name": "Services",
+          "items": [
+            "Season / 15-day window generator",
+            "Spatial maths: haversine, point-in-polygon, line distance",
+            "Exposure & road analysis"
+          ]
         },
-        { "name": "Delivery", "items": ["Python API for map layers", "Interactive web map", "Layer & legend controls"] }
+        {
+          "name": "Model slot",
+          "items": [
+            "Per-window GeoJSON predictions",
+            "Model card (lead time, validation)",
+            "Random Forest / SVM terrain classifiers (in development)"
+          ]
+        },
+        {
+          "name": "Delivery",
+          "items": [
+            "Flask routes + JSON API",
+            "MapLibre map, outlook, tables",
+            "CSV/GeoJSON exports with provenance",
+            "Printable report"
+          ]
+        }
       ]
     },
     "technologies": [
       "Python",
+      "Flask",
+      "MapLibre",
+      "GeoJSON",
+      "OpenStreetMap",
       "Scikit-learn",
       "Random Forest",
       "SVM",
-      "Satellite data",
-      "DEM",
       "Geospatial data processing",
-      "Interactive mapping",
       "REST APIs"
     ],
     "features": [
@@ -64,16 +85,16 @@
     ],
     "challenges": [
       {
-        "title": "Aligning heterogeneous data",
-        "description": "DEMs, satellite rasters and weather data come with different resolutions, projections and time stamps. Aligning them correctly onto one grid is a core part of the work."
+        "title": "Never faking data",
+        "description": "Hazard zones and model output aren't available yet. The portal shows 'No data' or 'Not assessed' instead of filling gaps with synthetic values, and every dataset carries its limitations."
       },
       {
-        "title": "Limited and imbalanced labels",
-        "description": "Recorded avalanche events are rare compared with stable terrain, which makes training data imbalanced and requires careful evaluation rather than relying on a single accuracy number."
+        "title": "Aligning heterogeneous sources",
+        "description": "Settlements, incidents, roads and extents come with different accuracy and provenance. A catalog with CRS, resolution and date keeps them honest."
       },
       {
-        "title": "Communicating uncertainty",
-        "description": "Model outputs are a decision-support aid, not a safety guarantee. The interface needs to communicate that clearly."
+        "title": "Decision support, not warnings",
+        "description": "Outputs are framed as situational awareness; official warnings remain with NDMA/PDMA. The interface says so everywhere."
       }
     ],
     "learnings": [
@@ -82,7 +103,14 @@
       "Designing pipelines that separate heavy offline processing from a fast web layer"
     ],
     "screenshots": [],
-    "links": { "demo": "", "github": "" }
+    "links": {
+      "demo": "",
+      "github": "https://github.com/mtaha2588/Universal-Avalanche-Portal-Endgame"
+    },
+    "whoItHelps": "Disaster-management teams, district authorities and researchers who need one clear, location-specific picture of avalanche exposure during the winter season.",
+    "currentStatus": "Portal, data registry, exposure analysis, exports and tests are built (15 automated tests). Hazard/runout layers and the prediction model are not yet connected; the portal shows 'No data' rather than synthetic values until they are.",
+    "thumbnail": "projects/avalanche-intelligence-platform.webp",
+    "thumbnailAlt": "Screenshot of the Avalanche Risk Intelligence Portal: risk map of northern Pakistan with layer controls"
   },
   {
     "slug": "ai-business-automation-agent",
@@ -93,13 +121,20 @@
     "accent": "violet",
     "featured": true,
     "summary": "An AI agent architecture that takes routine business tasks, such as gathering data from connected services, processing it and producing structured reports, and automates them end to end with logging and human review.",
-    "highlights": ["LLM-driven agent", "Tool & API integrations", "Automated reporting"],
+    "highlights": [
+      "Rule-based workflow engine (LLM layer planned)",
+      "Every step logged for human review",
+      "Live demo API on this site"
+    ],
     "problem": "Small teams spend significant time on repetitive operational work: copying data between tools, compiling status updates, summarising information and preparing recurring reports. The work is necessary but low-leverage, and doing it by hand is slow and error-prone.",
     "solution": "An agent built around a large language model that can plan a task, call a defined set of tools (API integrations, data processing functions, report generators) and assemble the results. Workflows are triggered on a schedule or by events, every step is logged, and outputs can be held for human review before they are sent.",
     "architecture": {
       "overview": "A Python service hosts the agent loop. The LLM decides which tool to call next; each tool is a small, tested Python function with a strict input schema. A workflow layer handles triggers, retries and logging.",
       "layers": [
-        { "name": "Triggers", "items": ["Scheduled jobs", "Webhooks & events", "Manual requests"] },
+        {
+          "name": "Triggers",
+          "items": ["Scheduled jobs", "Webhooks & events", "Manual requests"]
+        },
         {
           "name": "Agent Core",
           "items": ["LLM reasoning (OpenAI / Claude API)", "Task planning", "Tool selection & calling"]
@@ -108,19 +143,22 @@
           "name": "Tools & Integrations",
           "items": ["REST API connectors", "Data processing functions", "Document & report generation"]
         },
-        { "name": "Output & Oversight", "items": ["Structured reports", "Run logs & audit trail", "Human review step"] }
+        {
+          "name": "Output & Oversight",
+          "items": ["Structured reports", "Run logs & audit trail", "Human review step"]
+        }
       ]
     },
     "technologies": [
       "Python",
+      "FastAPI",
+      "Workflow automation",
+      "AI agents",
       "LLMs",
       "OpenAI API",
       "Claude API",
-      "AI agents",
-      "Workflow automation",
       "API integration",
-      "REST APIs",
-      "FastAPI"
+      "REST APIs"
     ],
     "features": [
       {
@@ -160,7 +198,14 @@
       "Integrating multiple third-party APIs behind a consistent internal interface"
     ],
     "screenshots": [],
-    "links": { "demo": "", "github": "" }
+    "links": {
+      "demo": "",
+      "github": ""
+    },
+    "whoItHelps": "Small teams spending hours on inbox triage, data entry between tools and recurring reports.",
+    "currentStatus": "Prototype with a working rule-based engine and live demo API on this site; LLM planning layer planned.",
+    "thumbnail": "projects/ai-business-automation-agent.webp",
+    "thumbnailAlt": "The AI Business Automation Agent's 3D workflow exhibit with its status, log and engine panels"
   },
   {
     "slug": "ai-enabled-car-sales-platform",
@@ -171,7 +216,11 @@
     "accent": "electric",
     "featured": true,
     "summary": "A full-stack web application for a car sales business: vehicle listings, customer inquiries captured as leads, a lead management dashboard and automation that helps the sales team respond faster.",
-    "highlights": ["Python & Flask web app", "Lead management", "Sales workflow automation"],
+    "highlights": [
+      "Lead scoring and pipeline demo (live on this site)",
+      "Vehicle inventory management",
+      "Sales workflow automation"
+    ],
     "problem": "Smaller car dealerships often manage inventory and customer inquiries across spreadsheets, phone calls and messaging apps. Leads get lost, follow-ups are inconsistent and there is little visibility into where each potential buyer is in the sales process.",
     "solution": "A Flask web application with a public vehicle catalogue and inquiry forms that feed directly into a lead management system. Staff get a dashboard to track lead status, and automation handles repetitive steps such as lead notifications, follow-up reminders and AI-assisted inquiry summaries.",
     "architecture": {
@@ -185,7 +234,10 @@
           "name": "Flask Backend",
           "items": ["Routes & business logic", "Form validation", "Authentication for staff"]
         },
-        { "name": "Data", "items": ["SQL database", "Vehicles, leads & activity models"] },
+        {
+          "name": "Data",
+          "items": ["SQL database", "Vehicles, leads & activity models"]
+        },
         {
           "name": "Automation & AI",
           "items": ["Lead notifications", "Follow-up reminders", "AI-assisted inquiry summaries"]
@@ -231,6 +283,256 @@
       "Applying automation to a concrete sales workflow"
     ],
     "screenshots": [],
-    "links": { "demo": "", "github": "" }
+    "links": {
+      "demo": "",
+      "github": ""
+    },
+    "whoItHelps": "Smaller dealerships managing inventory and leads across spreadsheets and messaging apps.",
+    "currentStatus": "In development; lead scoring and pipeline demo are live on this site.",
+    "thumbnail": "projects/ai-enabled-car-sales-platform.webp",
+    "thumbnailAlt": "The Car Sales Platform's 3D exhibit: a vehicle inventory and lead pipeline"
+  },
+  {
+    "slug": "batura-glacier-satellite-cnn",
+    "title": "Batura Glacier Satellite-Imagery CNN Analysis",
+    "tagline": "Sentinel-2 time series of Batura Glacier (2020–2026) from Google Earth Engine, prepared for CNN analysis.",
+    "category": "Geospatial · Computer Vision",
+    "status": "In Development",
+    "accent": "cyan",
+    "featured": false,
+    "summary": "A Python pipeline that builds half-month Sentinel-2 median composites of Batura Glacier (Hunza, Gilgit-Baltistan) in Google Earth Engine, exports them as GeoTIFFs and CNN-ready NumPy tile arrays, and checks every image for gaps and cloud. The CNN analysis of glacier change over 2020–2026 is in progress.",
+    "whoItHelps": "Glaciologists, climate researchers and water-resource planners who need a consistent, reproducible satellite record of a glacier rather than one-off downloads.",
+    "currentStatus": "Pipeline, quality checks and the CNN dataset loader are built. Composites are being generated back to 2020. The CNN change-analysis models are in development.",
+    "highlights": ["Google Earth Engine pipeline", "Half-month composites 2020–2026", "CNN-ready tiles"],
+    "problem": "Studying a glacier over years means hundreds of satellite scenes with clouds, gaps and inconsistent processing. Downloading them by hand is slow and the results are not reproducible, which makes any model trained on them hard to trust.",
+    "solution": "An Earth Engine pipeline produces one cloud-filtered median composite per half-month, saves GeoTIFFs plus 256×256 tile arrays scaled for neural networks, writes previews and contact sheets for visual cloud checks, and logs every image. Runs are resumable and only build what is missing.",
+    "architecture": {
+      "overview": "Batch processing in Google Earth Engine, exported to Google Drive, with local verification and a dataset loader for PyTorch.",
+      "layers": [
+        {
+          "name": "Acquisition",
+          "items": [
+            "Sentinel-2 scenes per half-month",
+            "Cloud masking & median composite",
+            "Automatic window widening when scenes are missing"
+          ]
+        },
+        {
+          "name": "Export",
+          "items": [
+            "uint16 GeoTIFFs (Blue/Green/Red/NIR)",
+            "float16 CNN tiles (275 × 256 × 256 × 4)",
+            "dataset_info.json: bands, scaling, grid, CRS"
+          ]
+        },
+        {
+          "name": "Quality",
+          "items": [
+            "Per-image run log and quality report",
+            "RGB previews and yearly contact sheets",
+            "Missing / broken / cloudy detection"
+          ]
+        },
+        {
+          "name": "Analysis",
+          "items": [
+            "BaturaTiles loader (memory-mapped)",
+            "Per-tile time series",
+            "CNN models for glacier change (in development)"
+          ]
+        }
+      ]
+    },
+    "technologies": [
+      "Python",
+      "Google Earth Engine",
+      "Sentinel-2",
+      "NumPy",
+      "PyTorch",
+      "Satellite data",
+      "Geospatial data processing",
+      "CNN"
+    ],
+    "features": [
+      {
+        "title": "Reproducible composites",
+        "description": "Every half-month from 2020 to 2026 is built the same way, so comparisons across years are fair."
+      },
+      {
+        "title": "CNN-ready output",
+        "description": "Tiles are pre-scaled and gridded with a loader that gives per-tile time series straight to PyTorch."
+      },
+      {
+        "title": "Built-in quality checks",
+        "description": "A verification pass lists missing, broken, cloudy or widened images and renders contact sheets to eyeball."
+      },
+      {
+        "title": "Resumable runs",
+        "description": "Stop any time; finished images are skipped and half-written files never appear under their final name."
+      }
+    ],
+    "challenges": [
+      {
+        "title": "Clouds and gaps",
+        "description": "Mountain weather leaves many half-months with few clear scenes. The pipeline widens the window and records that it did, rather than hiding it."
+      },
+      {
+        "title": "Data volume",
+        "description": "Years of 10 m imagery add up. Tiled, compressed GeoTIFFs and memory-mapped arrays keep it workable on a laptop."
+      },
+      {
+        "title": "Honest modelling",
+        "description": "Glacier change is subtle; model claims will only be made after proper validation against known reference data."
+      }
+    ],
+    "learnings": [
+      "Earth Engine batch processing and export limits",
+      "Designing datasets for time-series CNNs",
+      "Quality control for remote-sensing pipelines"
+    ],
+    "screenshots": [],
+    "links": {
+      "demo": "",
+      "github": ""
+    },
+    "privateRepo": true
+  },
+  {
+    "slug": "coastal-wind-solar-ml",
+    "title": "Wind & Solar Energy Potential Prediction",
+    "tagline": "Machine learning that predicts wind and solar energy potential in coastal areas.",
+    "category": "Machine Learning · Energy",
+    "status": "Prototype",
+    "accent": "electric",
+    "featured": false,
+    "summary": "A machine-learning project that predicts wind and solar energy potential for coastal locations from weather and environmental data, related to my co-authored IEEE conference paper on ML-based energy prediction for hybrid solar-wind energy harvesters.",
+    "whoItHelps": "Renewable-energy planners and engineers deciding where hybrid solar-wind systems are worth installing.",
+    "currentStatus": "Research prototype. Models and evaluation exist as project work; a public repository and write-up are planned.",
+    "highlights": ["Energy prediction models", "Coastal site assessment", "IEEE paper co-author"],
+    "problem": "Hybrid solar-wind systems only pay off where both resources are reliable. Measuring that on site for every candidate location is slow and expensive, and simple averages miss how the two resources vary together.",
+    "solution": "Supervised machine-learning models trained on historical weather and environmental variables estimate wind and solar energy potential per location, so promising coastal sites can be ranked before field measurement.",
+    "architecture": {
+      "overview": "A classical ML workflow: data collection, feature engineering, model training and comparison, and evaluation with held-out data.",
+      "layers": [
+        {
+          "name": "Data",
+          "items": ["Historical weather & environmental variables", "Coastal location features"]
+        },
+        {
+          "name": "Features",
+          "items": ["Cleaning and normalisation", "Seasonal and temporal features"]
+        },
+        {
+          "name": "Models",
+          "items": ["Regression models for energy potential", "Model comparison and tuning"]
+        },
+        {
+          "name": "Evaluation",
+          "items": ["Held-out validation", "Error analysis per site"]
+        }
+      ]
+    },
+    "technologies": ["Python", "Scikit-learn", "Pandas", "NumPy", "Machine learning"],
+    "features": [
+      {
+        "title": "Site ranking",
+        "description": "Estimates energy potential per location so sites can be compared before investment."
+      },
+      {
+        "title": "Hybrid view",
+        "description": "Treats wind and solar together, which matters for hybrid harvesters."
+      },
+      {
+        "title": "Transparent evaluation",
+        "description": "Reports errors on unseen data instead of training-set scores."
+      }
+    ],
+    "challenges": [
+      {
+        "title": "Data availability",
+        "description": "Coastal measurement data is sparse; the quality of public weather data limits what the models can learn."
+      },
+      {
+        "title": "Generalisation",
+        "description": "A model that fits one coastline may not transfer; evaluation by location guards against that."
+      }
+    ],
+    "learnings": [
+      "Feature engineering for environmental time series",
+      "Comparing regression models fairly",
+      "Writing up ML results for peer review"
+    ],
+    "screenshots": [],
+    "links": {
+      "demo": "",
+      "github": ""
+    }
+  },
+  {
+    "slug": "final-year-computer-vision",
+    "title": "Final-Year Project: Computer Vision with CNNs",
+    "tagline": "Deep-learning computer vision with convolutional neural networks (NUST Mechatronics, 2026).",
+    "category": "Computer Vision · Deep Learning",
+    "status": "In Development",
+    "accent": "violet",
+    "featured": false,
+    "summary": "My NUST final-year project applies convolutional neural networks to a computer-vision task, covering dataset preparation, model training, evaluation and deployment considerations for a real system.",
+    "whoItHelps": "Teams that need images automatically understood: inspection, monitoring or detection tasks where manual review doesn't scale.",
+    "currentStatus": "Final-year project in progress (2026). Details of the task, dataset and results will be published here once the work is complete.",
+    "highlights": ["CNN models", "Dataset pipeline", "Model evaluation"],
+    "problem": "Many real-world monitoring tasks depend on people looking at images. That is slow, inconsistent and hard to scale.",
+    "solution": "Convolutional neural networks trained on a prepared dataset, with careful validation, to automate the visual task end to end.",
+    "architecture": {
+      "overview": "A standard deep-learning pipeline from data to a deployable model.",
+      "layers": [
+        {
+          "name": "Data",
+          "items": ["Image collection and labelling", "Augmentation and splits"]
+        },
+        {
+          "name": "Model",
+          "items": ["CNN architectures", "Transfer learning where useful"]
+        },
+        {
+          "name": "Evaluation",
+          "items": ["Validation metrics", "Error analysis"]
+        },
+        {
+          "name": "Deployment",
+          "items": ["Inference pipeline", "Hardware/software integration (mechatronics)"]
+        }
+      ]
+    },
+    "technologies": ["Python", "PyTorch", "CNN", "OpenCV", "Computer vision"],
+    "features": [
+      {
+        "title": "End-to-end pipeline",
+        "description": "From raw images to a trained, evaluated model."
+      },
+      {
+        "title": "Mechatronics integration",
+        "description": "Designed with the hardware and control side of a real system in mind."
+      }
+    ],
+    "challenges": [
+      {
+        "title": "Data quality",
+        "description": "Model quality is bounded by labelling quality; the pipeline invests in clean splits and augmentation."
+      },
+      {
+        "title": "Honest reporting",
+        "description": "Results will be published with their validation method, not headline numbers alone."
+      }
+    ],
+    "learnings": [
+      "Training and evaluating CNNs",
+      "Building reliable image datasets",
+      "Bridging ML models and physical systems"
+    ],
+    "screenshots": [],
+    "links": {
+      "demo": "",
+      "github": ""
+    }
   }
 ]

@@ -1,0 +1,64 @@
+# Builds the frontend and publishes it to GitHub Pages (https://mtaha2588.github.io).
+# Runs on every push to main, or manually: Actions → "Deploy to GitHub Pages" → Run workflow
+# (CLI: gh workflow run deploy.yml).
+#
+# Repository variables (Settings → Secrets and variables → Actions → Variables):
+#   VITE_API_URL           Render backend URL, e.g. https://ai-universe-api.onrender.com
+#   VITE_GOATCOUNTER_CODE  optional GoatCounter site code for privacy-friendly analytics
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push waits instead of cancelling a live deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_GOATCOUNTER_CODE: ${{ vars.VITE_GOATCOUNTER_CODE }}
+          SITE_URL: https://mtaha2588.github.io
+          BASE_PATH: /
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

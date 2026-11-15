@@ -15,7 +15,16 @@ from ..config import get_settings
 logger = logging.getLogger("portfolio.email")
 
 
-def send_contact_notification(*, name: str, email: str, company: str | None, message: str, message_id: int) -> bool:
+def send_contact_notification(
+    *,
+    name: str,
+    email: str,
+    company: str | None,
+    message: str,
+    message_id: int,
+    service: str | None = None,
+    budget: str | None = None,
+) -> bool:
     settings = get_settings()
     if not settings.email_enabled:
         logger.info("SMTP not configured; contact message %s saved without email notification.", message_id)
@@ -28,7 +37,8 @@ def send_contact_notification(*, name: str, email: str, company: str | None, mes
     msg["Reply-To"] = email
     # Plain text only: nothing a visitor typed is ever rendered as HTML.
     msg.set_content(
-        f"Name: {name}\nEmail: {email}\nCompany: {company or '-'}\nMessage ID: {message_id}\n\n{message}\n"
+        f"Name: {name}\nEmail: {email}\nCompany: {company or '-'}\nService: {service or '-'}\n"
+        f"Budget: {budget or '-'}\nMessage ID: {message_id}\n\n{message}\n"
     )
 
     try:

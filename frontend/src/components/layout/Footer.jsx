@@ -9,9 +9,23 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
         <div>
           <p className="font-display text-lg font-semibold text-fg">{profile.name}</p>
-          <p className="mt-1 text-sm text-fg-muted">AI Developer · AI Automation Engineer · Full-Stack Developer</p>
+          <p className="mt-1 text-sm text-fg-muted">AI automation · Machine learning · Web development</p>
+          <nav aria-label="Footer" className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <Link to={{ pathname: "/", hash: "#services" }} className="text-fg-muted hover:text-fg">
+              Services
+            </Link>
+            <Link to={{ pathname: "/", hash: "#projects" }} className="text-fg-muted hover:text-fg">
+              Work
+            </Link>
+            <Link to="/notes" className="text-fg-muted hover:text-fg">
+              Notes
+            </Link>
+            <Link to={{ pathname: "/", hash: "#contact" }} className="text-fg-muted hover:text-fg">
+              Contact
+            </Link>
+          </nav>
           <p className="mt-4 font-mono text-xs text-fg-subtle">
-            © {new Date().getFullYear()} · Built with React, Tailwind CSS, Framer Motion &amp; FastAPI
+            © {new Date().getFullYear()} {profile.name} · {profile.location}
           </p>
         </div>
 

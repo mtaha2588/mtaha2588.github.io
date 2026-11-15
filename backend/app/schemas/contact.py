@@ -11,6 +11,9 @@ class ContactCreate(BaseModel):
     name: str = Field(min_length=2, max_length=100)
     email: EmailStr
     company: str | None = Field(default=None, max_length=120)
+    # Which service the enquiry is about and the rough budget (free text, validated like name).
+    service: str | None = Field(default=None, max_length=80)
+    budget: str | None = Field(default=None, max_length=40)
     message: str = Field(min_length=10, max_length=5000)
 
     # Anti-spam fields, sent by the frontend form:
@@ -19,7 +22,7 @@ class ContactCreate(BaseModel):
     website: str | None = Field(default=None, max_length=200)
     elapsed_ms: int | None = Field(default=None, ge=0, le=86_400_000)
 
-    @field_validator("name", "company")
+    @field_validator("name", "company", "service", "budget")
     @classmethod
     def clean_single_line(cls, value: str | None) -> str | None:
         if value is None:
@@ -54,6 +57,8 @@ class ContactRecord(BaseModel):
     name: str
     email: str
     company: str | None
+    service: str | None = None
+    budget: str | None = None
     message: str
     email_sent: bool
     created_at: datetime

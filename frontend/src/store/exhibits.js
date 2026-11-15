@@ -34,4 +34,5 @@ export const [exhibits, useExhibits] = createStore({
   labRun: 0, // increments when "Run pipeline" is pressed: a packet travels through every stage
   skillArea: null, // selected skills-constellation area id
   contactPulse: 0, // increments after a successful contact submission (beacon burst)
+  contactPrefill: null, // { service, message, at } set by "Get a quote" buttons
 });

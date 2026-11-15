@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { exhibits } from "../store/exhibits";
 import { demoApi } from "../lib/demoApi";
 import { isApiConfigured } from "../lib/api";
+import { apiStatus, waitForApi } from "../store/apiStatus";
 import { localTerrain } from "../lib/terrainLocal";
 import { SAMPLE_INVENTORY } from "../data/sampleInventory";
 
@@ -17,6 +18,15 @@ import { SAMPLE_INVENTORY } from "../data/sampleInventory";
 export async function loadExhibitData() {
   if (!isApiConfigured) {
     exhibits.set({ apiOnline: false, terrain: { ...localTerrain(), source: "local" }, inventory: SAMPLE_INVENTORY });
+    return;
+  }
+  // Render local placeholders immediately, then swap in live data once the server answers.
+  if (!exhibits.get().terrain) {
+    exhibits.set({ terrain: { ...localTerrain(), source: "local" }, inventory: SAMPLE_INVENTORY });
+  }
+  const live = await waitForApi();
+  if (!live) {
+    exhibits.set({ apiOnline: false });
     return;
   }
   const [terrain, inventory, pipeline] = await Promise.allSettled([
@@ -38,6 +48,13 @@ export async function loadExhibitData() {
 export function useExhibitData() {
   useEffect(() => {
     loadExhibitData();
+    // If the server comes back later (status flips to live), load the real data then.
+    let was = apiStatus.get().status;
+    return apiStatus.subscribe(() => {
+      const now = apiStatus.get().status;
+      if (now === "live" && was !== "live") loadExhibitData();
+      was = now;
+    });
   }, []);
 }
 

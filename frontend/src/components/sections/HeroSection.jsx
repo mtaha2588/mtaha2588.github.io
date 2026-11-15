@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, Download, Mail } from "lucide-react";
+import { ArrowDown, ArrowRight, CalendarCheck, Download, MapPin } from "lucide-react";
 import { profile } from "../../data/profile";
 import { useUniverse } from "../../store/universe";
 import { scrollToSection } from "../../hooks/useScrollStations";
+import { prefillContact } from "../../lib/contact";
 import SocialLinks from "../ui/SocialLinks";
 import HoloPortrait from "../ui/HoloPortrait";
 import NetworkGlobe from "../hero/NetworkGlobe";
@@ -23,8 +24,6 @@ export default function HeroSection() {
   const done = useUniverse((s) => s.introDone);
   const lite = useUniverse((s) => s.mode === "lite");
   const atTop = useUniverse((s) => s.station === 0);
-  const [first, ...rest] = profile.headline.split(". ");
-  const second = rest.join(". ");
   const roles = profile.title.split(" | ");
 
   return (
@@ -32,12 +31,13 @@ export default function HeroSection() {
       id="home"
       aria-labelledby="hero-name"
       data-station="0"
-      className="pointer-events-none relative flex min-h-[100svh] items-center pt-24 pb-24 lg:pt-28"
+      className="pointer-events-none relative flex min-h-[100svh] items-center overflow-x-clip pt-24 pb-24 lg:pt-28"
     >
       <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:px-8">
+        {/* Text is painted immediately (no entrance animation): it's the page's main content. */}
         <motion.div
           variants={container}
-          initial="hidden"
+          initial={false}
           animate={done ? "show" : "hidden"}
           className="pointer-events-auto order-2 max-w-xl lg:order-1"
         >
@@ -45,7 +45,7 @@ export default function HeroSection() {
             <motion.div variants={item}>
               <button
                 type="button"
-                onClick={() => scrollToSection("contact")}
+                onClick={() => prefillContact()}
                 className="glass inline-flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-2.5 text-sm text-fg-muted transition-colors hover:text-fg"
               >
                 <span className="relative flex h-2.5 w-2.5">
@@ -81,8 +81,7 @@ export default function HeroSection() {
             variants={item}
             className="mt-6 font-display text-[1.6rem] leading-tight font-medium tracking-tight text-fg [text-shadow:0_2px_24px_rgba(2,4,10,0.9)] sm:text-[2rem]"
           >
-            {first}
-            {second && "."} {second && <span className="text-gradient">{second}</span>}
+            {profile.valueLine}
           </motion.p>
 
           <motion.p
@@ -92,34 +91,54 @@ export default function HeroSection() {
             {profile.intro}
           </motion.p>
 
-          <motion.div variants={item} className="mt-6">
-            <p className="font-mono text-[10px] tracking-[0.28em] text-fg-subtle uppercase">Focus areas</p>
-            <ul className="mt-2.5 flex flex-wrap gap-2">
-              {profile.about.interests.map((interest) => (
-                <li key={interest} className="chip !border-holo-cyan/25 !bg-holo-blue/10 !text-fg">
-                  {interest}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          <motion.p variants={item} className="mt-4 flex items-center gap-2 text-sm text-fg-muted">
+            <MapPin size={15} className="shrink-0 text-holo-cyan" aria-hidden="true" />
+            {profile.timezones}
+          </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
-            <button type="button" onClick={() => scrollToSection("projects")} className="btn-primary group">
-              View Projects
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
-            </button>
-            <button type="button" onClick={() => scrollToSection("contact")} className="btn-ghost">
-              <Mail size={18} />
-              Get in Touch
+            {profile.links.calendly ? (
+              <a href={profile.links.calendly} target="_blank" rel="noopener noreferrer" className="btn-primary group">
+                <CalendarCheck size={18} aria-hidden="true" />
+                Book a free call
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => prefillContact("", "I'd like to book a free call about ")}
+                className="btn-primary group"
+              >
+                <CalendarCheck size={18} aria-hidden="true" />
+                Book a free call
+              </button>
+            )}
+            <button type="button" onClick={() => scrollToSection("projects")} className="btn-ghost group">
+              See my work
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </button>
             {profile.resumeUrl && (
               <a href={profile.resumeUrl} download className="btn-ghost">
-                <Download size={18} />
-                Resume
+                <Download size={18} aria-hidden="true" />
+                Download CV
               </a>
             )}
             <SocialLinks includeEmail={false} className="sm:ml-1" />
           </motion.div>
+
+          {profile.trust.length > 0 && (
+            <motion.ul
+              variants={item}
+              aria-label="Background"
+              className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-5 text-[13px] text-fg-muted"
+            >
+              {profile.trust.map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-holo-cyan" aria-hidden="true" />
+                  {t}
+                </li>
+              ))}
+            </motion.ul>
+          )}
         </motion.div>
 
         <motion.div

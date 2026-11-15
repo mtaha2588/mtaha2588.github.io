@@ -48,3 +48,20 @@ def init_db() -> None:
     from .demos.car_sales import models as car_models  # noqa: F401
 
     Base.metadata.create_all(bind=engine)
+    _add_missing_columns()
+
+
+def _add_missing_columns() -> None:
+    """Adds columns introduced after a database was first created (additive only, safe to re-run)."""
+    from sqlalchemy import inspect, text
+
+    wanted = {"contact_messages": {"service": "VARCHAR(80)", "budget": "VARCHAR(40)"}}
+    insp = inspect(engine)
+    with engine.begin() as conn:
+        for table, cols in wanted.items():
+            if table not in insp.get_table_names():
+                continue
+            existing = {c["name"] for c in insp.get_columns(table)}
+            for col, ddl in cols.items():
+                if col not in existing:
+                    conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {ddl}"))

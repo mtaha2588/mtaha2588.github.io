@@ -12,7 +12,7 @@ export default function SkillsSection() {
   return (
     <EnvSection
       id="skills"
-      station={6}
+      station={8}
       eyebrow="Technical Skills"
       title="A connected skill constellation"
       intro="Eight areas, linked wherever they share a skill. Select an area to see its skills and the projects that use them. Evidence is shown through projects rather than self-rated levels."

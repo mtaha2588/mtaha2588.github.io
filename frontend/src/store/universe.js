@@ -12,13 +12,25 @@ import { hasWebGL, prefersReducedMotion, qualityTier } from "../lib/device";
 
 const MODE_KEY = "aiu:mode";
 
+/** True for phones/tablets, modest hardware and data-saver connections: they start in 2D. */
+function prefersLite() {
+  if (typeof window === "undefined") return true;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const saveData = navigator.connection?.saveData === true;
+  return coarse || saveData || qualityTier() === "low";
+}
+
 function initialMode(webgl) {
   if (!webgl) return "lite";
+  let stored = null;
   try {
-    return localStorage.getItem(MODE_KEY) === "lite" ? "lite" : "immersive";
+    stored = localStorage.getItem(MODE_KEY);
   } catch {
-    return "immersive";
+    /* storage unavailable */
   }
+  // An explicit choice always wins; otherwise weak or touch devices get the fast 2D version.
+  if (stored === "lite" || stored === "immersive") return stored;
+  return prefersLite() ? "lite" : "immersive";
 }
 
 const webgl = typeof window !== "undefined" && hasWebGL();
@@ -29,7 +41,9 @@ let state = {
   quality: qualityTier(),
   reducedMotion: prefersReducedMotion(),
   canvasReady: false,
-  introDone: false,
+  // The page never waits for the 3D intro: content is usable from the first paint
+  // (the 3D reveal runs in the background, see components/universe/Intro.jsx).
+  introDone: true,
   station: 0, // nearest station index, for the HUD
 };
 

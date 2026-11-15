@@ -219,6 +219,9 @@ export default function NetworkGlobe({ className = "" }) {
     let frame = 0;
     let running = false;
     let lastTs = 0;
+    // The spin starts only once the page is idle, so it never competes with the first paint.
+    let ready = false;
+    let tick = 0;
 
     const loop = (ts) => {
       const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0.016;
@@ -229,7 +232,8 @@ export default function NetworkGlobe({ className = "" }) {
         // Ease momentum back to the gentle idle spin.
         velY += (baseVel - velY) * 0.03;
       }
-      draw();
+      // Phones: draw every other frame (~30 fps), which halves the cost and looks the same.
+      if (!isSmall || tick++ % 2 === 0) draw();
       if (running) frame = requestAnimationFrame(loop);
     };
 
@@ -247,10 +251,11 @@ export default function NetworkGlobe({ className = "" }) {
     // Pointer interaction
     const onDown = (e) => {
       dragging = true;
+      ready = true;
       lastX = e.clientX;
       lastY = e.clientY;
       canvas.setPointerCapture?.(e.pointerId);
-      if (reduceMotion) start();
+      start();
     };
     const onMove = (e) => {
       if (!dragging) return;
@@ -286,21 +291,32 @@ export default function NetworkGlobe({ className = "" }) {
     let visible = true;
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible && !reduceMotion && !document.hidden) start();
+      if (visible && ready && !reduceMotion && !document.hidden) start();
       else stop();
     });
     io.observe(canvas);
 
     const onVisibility = () => {
       if (document.hidden) stop();
-      else if (visible && !reduceMotion) start();
+      else if (visible && ready && !reduceMotion) start();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
-    if (reduceMotion) draw();
-    else start();
+    draw();
+    let idleTimer = 0;
+    if (!reduceMotion) {
+      idleTimer = setTimeout(() => {
+        const begin = () => {
+          ready = true;
+          if (visible && !document.hidden) start();
+        };
+        if ("requestIdleCallback" in window) window.requestIdleCallback(begin, { timeout: 2000 });
+        else begin();
+      }, 2500);
+    }
 
     return () => {
+      clearTimeout(idleTimer);
       stop();
       io.disconnect();
       resizeObserver.disconnect();

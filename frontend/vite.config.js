@@ -5,6 +5,8 @@ import glsl from "vite-plugin-glsl";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // "/" for https://mtaha2588.github.io; set BASE_PATH=/repo-name/ for a project-page deployment.
+  base: process.env.BASE_PATH || "/",
   // glsl(): import .glsl/.vert/.frag shader files as strings (supports #include chunks).
   plugins: [react(), tailwindcss(), glsl()],
   server: {

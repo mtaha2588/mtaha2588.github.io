@@ -11,6 +11,7 @@ import AvalancheExhibit from "./exhibits/AvalancheExhibit";
 import AgentExhibit from "./exhibits/AgentExhibit";
 import CarExhibit from "./exhibits/CarExhibit";
 import WorkflowLab from "./environments/WorkflowLab";
+import ProjectGallery from "./environments/ProjectGallery";
 import SkillsConstellation from "./environments/SkillsConstellation";
 import IdentityCore from "./environments/IdentityCore";
 import ContactBeacon from "./environments/ContactBeacon";
@@ -84,6 +85,7 @@ export default function UniverseCanvas({ active = true }) {
       <AvalancheExhibit reduced={reduced} />
       <AgentExhibit quality={quality} reduced={reduced} />
       <CarExhibit quality={quality} reduced={reduced} />
+      <ProjectGallery reduced={reduced} />
       <WorkflowLab reduced={reduced} />
       <SkillsConstellation />
       <IdentityCore reduced={reduced} />

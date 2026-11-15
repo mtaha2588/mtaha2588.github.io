@@ -4,7 +4,7 @@ import { exhibits, useExhibits } from "../../store/exhibits";
 import { demoApi } from "../../lib/demoApi";
 import { refreshPipeline } from "../../hooks/useExhibitData";
 import { SAMPLE_INVENTORY } from "../../data/sampleInventory";
-import DemoShell, { ErrorNote, Field } from "./DemoShell";
+import DemoShell, { ErrorNote, Field, OfflinePreview } from "./DemoShell";
 
 const STAGE_STYLE = {
   Hot: "border-fuchsia-300/40 bg-fuchsia-400/10 text-fuchsia-100",
@@ -67,7 +67,35 @@ export default function LeadSimulator() {
   };
 
   return (
-    <DemoShell title="Live demo · Lead capture & scoring" endpoint="POST /api/demos/car-sales/leads · GET /pipeline">
+    <DemoShell
+      title="Live demo · Lead capture & scoring"
+      endpoint="POST /api/demos/car-sales/leads · GET /pipeline"
+      offlinePreview={
+        <OfflinePreview>
+          <p className="text-sm text-fg-muted">
+            Sample lead: Midsize SUV, budget $36,500, buying in 1–3 months, pre-approved financing, wants a test drive.
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            <span
+              className={`rounded-full border px-3 py-1 font-mono text-xs tracking-wider uppercase ${STAGE_STYLE.Hot}`}
+            >
+              Hot lead
+            </span>
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/5">
+              <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-cyan to-violet" />
+            </div>
+            <span className="font-mono text-sm text-fg">85/100</span>
+          </div>
+          <ul className="mt-3 space-y-1 text-xs text-fg-muted">
+            <li>Timeframe 1–3 months +25 · pre-approved +15 · budget covers price +25 · test drive +20</li>
+            <li>Automation: notify sales now · follow-up call in 2 h · offer test-drive slots in 4 h (simulated)</li>
+          </ul>
+          <p className="mt-3 text-xs text-fg-subtle">
+            Live, the API scores your inputs and the lead joins the 3D pipeline.
+          </p>
+        </OfflinePreview>
+      }
+    >
       <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">
         <Field label="Vehicle (sample inventory)" htmlFor="cs-vehicle">
           <select

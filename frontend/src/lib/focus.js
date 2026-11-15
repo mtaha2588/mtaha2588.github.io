@@ -1,4 +1,5 @@
-import gsap from "gsap";
+// GSAP is loaded on first use: focus mode exists only in 3D, so 2D visitors never download it.
+const tween = (target, vars) => import("gsap").then(({ default: gsap }) => gsap.to(target, vars));
 import { exhibits } from "../store/exhibits";
 import { motion, universe } from "../store/universe";
 import { EXHIBITS } from "../three/exhibits/layout";
@@ -27,14 +28,14 @@ export function focusExhibit(key) {
   motion.focus.zoom = 1;
   exhibits.set({ focused: key, hovered: null });
   lockScroll(true);
-  gsap.to(motion.focus, { blend: 1, duration: duration(), ease: "power3.inOut", overwrite: true });
+  tween(motion.focus, { blend: 1, duration: duration(), ease: "power3.inOut", overwrite: true });
 }
 
 export function exitFocus() {
   if (!exhibits.get().focused) return;
   exhibits.set({ focused: null });
   lockScroll(false);
-  gsap.to(motion.focus, {
+  tween(motion.focus, {
     blend: 0,
     duration: duration() * 0.85,
     ease: "power3.inOut",

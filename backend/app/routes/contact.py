@@ -47,6 +47,8 @@ def submit_contact(
         name=data.name,
         email=str(data.email).lower(),
         company=data.company,
+        service=data.service,
+        budget=data.budget,
         message=data.message,
         ip_address=ip,
         user_agent=(request.headers.get("user-agent") or "")[:300] or None,
@@ -58,7 +60,14 @@ def submit_contact(
     background.add_task(
         _notify_and_record,
         record.id,
-        {"name": record.name, "email": record.email, "company": record.company, "message": record.message},
+        {
+            "name": record.name,
+            "email": record.email,
+            "company": record.company,
+            "service": record.service,
+            "budget": record.budget,
+            "message": record.message,
+        },
     )
     return ContactAccepted()
 

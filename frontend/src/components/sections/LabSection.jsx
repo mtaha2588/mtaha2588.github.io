@@ -28,7 +28,7 @@ export default function LabSection() {
   return (
     <EnvSection
       id="lab"
-      station={5}
+      station={7}
       eyebrow="AI Workflow Laboratory"
       title="From raw data to automated action"
       intro="The pipeline behind every project on this site. Select a stage here or in 3D to inspect how it works, the techniques involved and where it is applied."

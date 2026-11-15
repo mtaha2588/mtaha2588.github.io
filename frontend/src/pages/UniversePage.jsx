@@ -1,26 +1,35 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, universe, useUniverse } from "../store/universe";
 import { exhibits, useExhibits } from "../store/exhibits";
 import { focusExhibit, lockScroll } from "../lib/focus";
-import FocusOverlay from "../components/universe/FocusOverlay";
 import { useScrollStations } from "../hooks/useScrollStations";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { useSeo } from "../hooks/useSeo";
+import { wakeApi } from "../store/apiStatus";
 import { useExhibitData } from "../hooks/useExhibitData";
 import { EXHIBITS } from "../three/exhibits/layout";
-import Intro from "../components/universe/Intro";
 import Hud from "../components/universe/Hud";
 import HeroSection from "../components/sections/HeroSection";
+import ServicesSection from "../components/sections/ServicesSection";
 import ExhibitionsOverview from "../components/sections/ExhibitionsOverview";
-import ExhibitSection from "../components/sections/ExhibitSection";
-import SlopeAssessor from "../components/demos/SlopeAssessor";
-import WorkflowRunner from "../components/demos/WorkflowRunner";
-import LeadSimulator from "../components/demos/LeadSimulator";
-import LabSection from "../components/sections/LabSection";
-import SkillsSection from "../components/sections/SkillsSection";
-import AboutSection from "../components/sections/AboutSection";
-import ContactSection from "../components/sections/ContactSection";
+import LazySection from "../components/layout/LazySection";
+import { renderAllSections, whenSectionsReady } from "../lib/renderAll";
 import Footer from "../components/layout/Footer";
+
+// Everything below the first two screens is code-split and loads as it's needed.
+const ExhibitSection = lazy(() => import("../components/sections/ExhibitSection"));
+const SlopeAssessor = lazy(() => import("../components/demos/SlopeAssessor"));
+const WorkflowRunner = lazy(() => import("../components/demos/WorkflowRunner"));
+const LeadSimulator = lazy(() => import("../components/demos/LeadSimulator"));
+const LabSection = lazy(() => import("../components/sections/LabSection"));
+const SkillsSection = lazy(() => import("../components/sections/SkillsSection"));
+const AboutSection = lazy(() => import("../components/sections/AboutSection"));
+const ContactSection = lazy(() => import("../components/sections/ContactSection"));
+const GallerySection = lazy(() => import("../components/sections/GallerySection"));
+const FaqSection = lazy(() => import("../components/sections/FaqSection"));
+// 3D-only overlays.
+const FocusOverlay = lazy(() => import("../components/universe/FocusOverlay"));
+const Intro = lazy(() => import("../components/universe/Intro"));
 
 /**
  * The main experience. Layers, back to front:
@@ -30,8 +39,9 @@ import Footer from "../components/layout/Footer";
  *   Intro         - the cinematic opening overlay
  */
 export default function UniversePage() {
-  usePageTitle();
+  useSeo({ path: "/" });
   useExhibitData();
+  useEffect(() => wakeApi(), []);
   const mode = useUniverse((s) => s.mode);
   const immersive = mode === "immersive";
 
@@ -50,8 +60,13 @@ export default function UniversePage() {
   // Arriving with #section (e.g. "Back to the universe" from a case study): scroll there.
   useEffect(() => {
     if (!introDone || !hash) return;
-    const id = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" }), 50);
-    return () => clearTimeout(id);
+    // The target and everything above it must be real content (not placeholders) before scrolling.
+    renderAllSections();
+    let live = true;
+    whenSectionsReady(() => live && document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" }));
+    return () => {
+      live = false;
+    };
   }, [introDone, hash]);
 
   // Arriving with ?focus=<exhibit> ("Explore in 3D" on a case study): fly straight into focus mode.
@@ -94,20 +109,50 @@ export default function UniversePage() {
         className={`pointer-events-none relative z-10 transition-opacity duration-700 ${focused ? "opacity-0 [&_*]:!pointer-events-none" : "opacity-100"}`}
       >
         <HeroSection />
-        <ExhibitionsOverview />
-        <ExhibitSection ex={EXHIBITS.avalanche} station={2} number="01" demo={<SlopeAssessor />} />
-        <ExhibitSection ex={EXHIBITS.agent} station={3} number="02" demo={<WorkflowRunner />} variant="holo" />
-        <ExhibitSection ex={EXHIBITS.car} station={4} number="03" demo={<LeadSimulator />} />
-        <LabSection />
-        <SkillsSection />
-        <AboutSection />
-        <ContactSection />
+        {/* Below the fold: in 2D mode each section renders as the visitor approaches it. */}
+        <LazySection id="services" station={1}>
+          <ServicesSection />
+        </LazySection>
+        <LazySection id="projects" station={2}>
+          <ExhibitionsOverview />
+        </LazySection>
+        <LazySection id={EXHIBITS.avalanche.sectionId} station={3}>
+          <ExhibitSection ex={EXHIBITS.avalanche} station={3} number="01" demo={<SlopeAssessor />} />
+        </LazySection>
+        <LazySection id={EXHIBITS.agent.sectionId} station={4}>
+          <ExhibitSection ex={EXHIBITS.agent} station={4} number="02" demo={<WorkflowRunner />} variant="holo" />
+        </LazySection>
+        <LazySection id={EXHIBITS.car.sectionId} station={5}>
+          <ExhibitSection ex={EXHIBITS.car} station={5} number="03" demo={<LeadSimulator />} />
+        </LazySection>
+        <LazySection id="gallery" station={6}>
+          <GallerySection />
+        </LazySection>
+        <LazySection id="lab" station={7}>
+          <LabSection />
+        </LazySection>
+        <LazySection id="skills" station={8}>
+          <SkillsSection />
+        </LazySection>
+        <LazySection id="about" station={9}>
+          <AboutSection />
+        </LazySection>
+        <LazySection id="contact" station={10}>
+          <ContactSection />
+        </LazySection>
+        <LazySection id="faq">
+          <FaqSection />
+        </LazySection>
       </main>
       <div className="relative z-10">
         <Footer />
       </div>
-      <FocusOverlay />
-      {immersive && <Intro />}
+      {immersive && (
+        <Suspense fallback={null}>
+          <FocusOverlay />
+          <Intro />
+        </Suspense>
+      )}
     </>
   );
 }

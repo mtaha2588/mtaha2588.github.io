@@ -172,7 +172,7 @@ export default function ProjectVisual({ project, className = "" }) {
   const slug = project.slug;
 
   let Art = AgentArt;
-  if (slug.includes("avalanche")) Art = TerrainArt;
+  if (slug.includes("avalanche") || slug.includes("glacier")) Art = TerrainArt;
   else if (slug.includes("car")) Art = PipelineArt;
 
   return (

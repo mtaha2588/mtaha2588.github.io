@@ -676,3 +676,94 @@
     display: none;
   }
 }
+
+/* Markdown notes (src/content/notes) */
+.prose-note {
+  color: var(--color-fg-muted);
+  line-height: 1.75;
+}
+.prose-note > * + * {
+  margin-top: 1.1em;
+}
+.prose-note h2 {
+  margin-top: 2em;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+.prose-note h3 {
+  margin-top: 1.6em;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+.prose-note a {
+  color: var(--color-cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-note ul,
+.prose-note ol {
+  padding-left: 1.25em;
+}
+.prose-note ul {
+  list-style: disc;
+}
+.prose-note ol {
+  list-style: decimal;
+}
+.prose-note code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--color-fg);
+}
+.prose-note pre {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+.prose-note blockquote {
+  border-left: 2px solid var(--color-cyan);
+  padding-left: 1rem;
+}
+.prose-note hr {
+  border-color: var(--color-line);
+  margin: 2.5em 0;
+}
+
+/*
+ * Phones and small tablets: backdrop blur over moving layers is the most
+ * expensive thing on the page (it re-renders every frame). Swap it for a
+ * near-opaque panel and hold the ambient background still.
+ */
+@media (max-width: 767px), (pointer: coarse) {
+  .glass {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass {
+    background: linear-gradient(180deg, rgb(16 24 48 / 0.94), rgb(8 12 26 / 0.94));
+  }
+  .animate-drift-a,
+  .animate-drift-b {
+    animation: none !important;
+    filter: none !important;
+  }
+  /* Holographic portrait: keep photo, frame and HUD; drop the per-frame blended effects. */
+  .hp-scanlines,
+  .hp-tint,
+  .hp-scanbeam,
+  .hp-sheen {
+    display: none !important;
+  }
+  .hp-rings .hp-spin,
+  .hp-rings .hp-spin-rev {
+    animation: none !important;
+  }
+  .hp-plate,
+  .holo-slab-face {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

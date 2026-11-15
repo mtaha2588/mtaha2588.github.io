@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { exhibits, useExhibits } from "../../store/exhibits";
 import { demoApi } from "../../lib/demoApi";
-import DemoShell, { ErrorNote, Field } from "./DemoShell";
+import DemoShell, { ErrorNote, Field, OfflinePreview } from "./DemoShell";
 
 const DIRS = [
   ["N", 0],
@@ -53,7 +53,32 @@ export default function SlopeAssessor() {
   };
 
   return (
-    <DemoShell title="Live demo · Terrain analysis" endpoint="POST /api/demos/avalanche/assess · GET /terrain/sample">
+    <DemoShell
+      title="Live demo · Terrain analysis"
+      endpoint="POST /api/demos/avalanche/assess · GET /terrain/sample"
+      offlinePreview={
+        <OfflinePreview>
+          <p className="text-sm text-fg-muted">
+            Sample assessment for a 38° north-east slope with 35 cm of new snow and 30 km/h wind from the south-west:
+          </p>
+          <p className="mt-2">
+            <span
+              className={`rounded-full border px-3 py-1 font-mono text-xs tracking-wider uppercase ${LEVEL_STYLE.high}`}
+            >
+              high susceptibility
+            </span>
+          </p>
+          <ul className="mt-3 space-y-1 text-sm text-fg-muted">
+            <li>▸ Slope angle 38° sits in the 30–45° start-zone band.</li>
+            <li>▸ 35 cm new snow in 72 h is a significant load.</li>
+            <li>▸ The slope faces downwind of the south-westerly, so wind loading is likely.</li>
+          </ul>
+          <p className="mt-3 text-xs text-fg-subtle">
+            The live demo computes this from your inputs on the API. The 3D terrain is still generated locally.
+          </p>
+        </OfflinePreview>
+      }
+    >
       {terrain && (
         <div className="mb-5">
           <div className="flex items-center justify-between gap-3">

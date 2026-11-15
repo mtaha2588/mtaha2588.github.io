@@ -26,7 +26,7 @@ Also: focus mode (click an exhibit → camera close-up, drag to rotate, wheel to
 
 ```
 AI-Developer-Portfolio/
-├── frontend/                 React + Vite app (deploys to Vercel)
+├── frontend/                 React + Vite app (deploys to GitHub Pages)
 │   ├── src/
 │   │   ├── data/             ← your content: profile.js, projects.json, skills.js, workflowLab.js
 │   │   ├── three/            3D scene: globe, exhibits/, environments/, camera rig, shaders/
@@ -34,7 +34,7 @@ AI-Developer-Portfolio/
 │   │   ├── pages/            Universe page, case-study page, 404
 │   │   ├── store/ hooks/ lib/
 │   └── vercel.json
-├── backend/                  FastAPI app (deploys to Render or Railway)
+├── backend/                  FastAPI app (deploys to Render)
 │   ├── app/
 │   │   ├── routes/           health, contact, projects
 │   │   ├── demos/            one self-contained backend per project (avalanche, automation_agent, car_sales)
@@ -59,8 +59,8 @@ AI-Developer-Portfolio/
 ### Quick start (Windows, macOS and Linux)
 
 ```bash
-git clone https://github.com/mtaha2588/Taha-Portfolio.git
-cd Taha-Portfolio
+git clone https://github.com/mtaha2588/mtaha2588.github.io.git
+cd mtaha2588.github.io
 npm run setup     # one time: Python environment + packages, backend/.env, frontend packages
 npm run dev       # starts the backend and the website together (Ctrl+C stops both)
 ```
@@ -141,11 +141,11 @@ cd ..\backend
 
 ## 4. Deploy
 
-The frontend and backend are deployed separately, on different URLs.
+Live site: **https://mtaha2588.github.io** (GitHub Pages). API: Render (free tier).
 
-### a) GitHub
+### a) Website on GitHub Pages (automatic)
 
-The code lives at **https://github.com/mtaha2588/Taha-Portfolio**. After changing anything:
+Every push to `main` runs `.github/workflows/deploy.yml`: it builds `frontend/` and publishes it to GitHub Pages.
 
 ```bash
 git add -A
@@ -153,34 +153,44 @@ git commit -m "Describe your change"
 git push
 ```
 
-Render and Vercel redeploy automatically on every push to `main` once they're connected.
+The build also writes one HTML file per page (so `/projects/<slug>` works on refresh), `404.html`, `sitemap.xml`, `robots.txt` and the social-preview tags (`frontend/scripts/postbuild.mjs`).
 
-### b) Backend on Render (recommended)
+Repository **variables** (Settings → Secrets and variables → Actions → Variables), all optional:
 
-1. Render dashboard → **New → Blueprint** → connect your GitHub repo. Render reads `render.yaml` and creates the **API** and a **PostgreSQL** database.
-2. When prompted, set `CORS_ORIGINS` to your Vercel URL (you can come back after step c), e.g. `https://your-portfolio.vercel.app`. Optional: `CORS_ORIGIN_REGEX` for Vercel previews and the `SMTP_*` values for email notifications.
-3. After deploy, check `https://<your-api>.onrender.com/api/health` returns `"status": "ok"`.
+| Variable                | What it does                                                                                                                       |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_API_URL`          | Backend URL, e.g. `https://ai-universe-api.onrender.com` (no trailing slash). Without it the demos show labelled offline previews. |
+| `VITE_GOATCOUNTER_CODE` | Your GoatCounter code (e.g. `mtaha` for mtaha.goatcounter.com) for privacy-friendly visit counts.                                  |
+
+After changing a variable, re-run the workflow: Actions → "Deploy to GitHub Pages" → Run workflow.
+
+### b) Backend on Render
+
+1. Open **https://render.com/deploy?repo=https://github.com/mtaha2588/mtaha2588.github.io**, log in, and approve. Render reads `render.yaml` and creates the **API** and a **PostgreSQL** database. `CORS_ORIGINS` is already set to `https://mtaha2588.github.io`.
+2. Optional: fill in the `SMTP_*` values to get an email for each new contact message.
+3. Check `https://<your-api>.onrender.com/api/health` returns `"status": "ok"`, then set it as `VITE_API_URL` (step a).
 
 Notes:
 
-- Use PostgreSQL in production: Render's free web services have an ephemeral disk, so a SQLite file would be wiped on every deploy or restart. The app switches databases purely via `DATABASE_URL`.
-- Free Render services sleep when idle and take ~30–60 s to wake. The site handles this: 3D exhibits render from local data and the demo panels show "API offline · Retry" until the API answers.
-- Render's free PostgreSQL databases expire after a limited period; upgrade the plan or move to another Postgres provider (e.g. Neon, Supabase) by changing `DATABASE_URL`.
+- Free Render services sleep when idle and take ~30–60 s to wake. The site handles this: it wakes the API in the background, shows "Waking up the live server…", falls back to labelled offline previews after ~90 s, and the contact form offers a pre-filled email instead.
+- Render's free web services have an ephemeral disk, so production uses PostgreSQL via `DATABASE_URL`. Free Render databases expire after a limited period; move to Neon or Supabase by changing `DATABASE_URL`.
 - `ADMIN_API_KEY` is generated for you. Read contact messages with:
   ```powershell
   curl.exe -H "X-Admin-Key: <key>" https://<your-api>.onrender.com/api/contact/messages
   ```
 
-**Alternative: Railway.** New project → Deploy from GitHub repo → set the service **Root Directory** to `backend`. The `Procfile` provides the start command. Add a PostgreSQL plugin and set the same environment variables as in `render.yaml` (`DATABASE_URL` from the plugin, `APP_ENV=production`, `TRUST_PROXY=true`, `CORS_ORIGINS`, `ADMIN_API_KEY`).
-
-### c) Frontend on Vercel
-
-1. Vercel → **Add New → Project** → import the GitHub repo.
-2. **Root Directory:** `frontend` (framework preset: Vite; `vercel.json` sets the rest).
-3. **Environment variable:** `VITE_API_URL` = your backend URL, e.g. `https://ai-universe-api.onrender.com` (no trailing slash).
-4. Deploy. Then make sure the backend's `CORS_ORIGINS` contains the exact Vercel URL and redeploy the backend if you changed it.
-
 `VITE_*` variables are public (bundled into the JavaScript); never put secrets there. Secrets only go in the backend's environment.
+
+### c) Content you can edit without code
+
+| File                              | What it controls                                                                                                           |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `frontend/src/data/profile.js`    | Name, value line, links (email, LinkedIn, WhatsApp, Fiverr, Upwork, Calendly), CV, availability. Empty values stay hidden. |
+| `frontend/src/data/services.js`   | Service packages, delivery times, prices (`null` shows "Custom quote"), budget options.                                    |
+| `frontend/src/data/experience.js` | Experience, education, publications.                                                                                       |
+| `frontend/src/data/faq.js`        | FAQ and testimonials (testimonials stay hidden while empty).                                                               |
+| `frontend/src/data/projects.json` | Projects and case studies (keep `backend/app/data/projects.json` in sync). Screenshots go in `frontend/public/projects/`.  |
+| `frontend/src/content/notes/*.md` | Notes/blog posts (`YYYY-MM-DD-slug.md` with front matter).                                                                 |
 
 ### Moving to a bigger database setup later
 
@@ -194,7 +204,7 @@ Tables are created automatically on startup (`Base.metadata.create_all`). Once t
 | `npm run setup` says Node is too old             | Install Node 22 LTS from nodejs.org (Vite needs 20.19+ or 22.12+).                                                                                                                |
 | `Port 5173` / `8000` already in use              | Close the other copy (Ctrl+C in its terminal), or use other ports: `API_PORT=8010 WEB_PORT=5180 npm run dev` (PowerShell: `$env:API_PORT=8010; $env:WEB_PORT=5180; npm run dev`). |
 | Demo panels say "API offline" locally            | Start the backend on port 8000.                                                                                                                                                   |
-| Browser console shows a CORS error in production | `CORS_ORIGINS` must exactly match the Vercel URL (scheme included, no trailing slash).                                                                                            |
-| Contact form says the service isn't available    | `VITE_API_URL` wasn't set in Vercel when the site was built: set it and redeploy.                                                                                                 |
+| Browser console shows a CORS error in production | `CORS_ORIGINS` on Render must be exactly `https://mtaha2588.github.io` (no trailing slash).                                                                                       |
+| Contact form offers "Send by email" instead      | The API is asleep or `VITE_API_URL` isn't set: set the repository variable and re-run the Pages workflow.                                                                         |
 | 3D looks slow on a device                        | Use the **3D On/Off** switch; quality also lowers itself automatically.                                                                                                           |
-| Case-study URL gives 404 on Vercel               | Ensure the project's Root Directory is `frontend` so `vercel.json` (SPA rewrite) is used.                                                                                         |
+| Case-study URL gives 404                         | Check the Pages workflow ran: the build writes `dist/projects/<slug>/index.html` for each project.                                                                                |

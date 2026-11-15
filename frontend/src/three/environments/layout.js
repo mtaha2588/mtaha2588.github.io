@@ -8,6 +8,18 @@
  * exhibitions rather than through them.
  */
 export const ENVIRONMENTS = {
+  // Holographic screening room: every project's real screenshot on a curved wall of screens.
+  gallery: {
+    key: "gallery",
+    sectionId: "gallery",
+    label: "Project Gallery",
+    position: [36, -1, 20],
+    azimuth: -2.08, // faces back towards the globe
+    distance: 19,
+    height: 3.6,
+    // Phones: a taller 2 × 3 wall (see ProjectGallery), so aim higher and stand further back.
+    mobile: { distance: 35, height: 8, targetY: 3.4 },
+  },
   lab: {
     key: "lab",
     sectionId: "lab",

@@ -1,14 +1,12 @@
 /**
  * ============================================================
- *  YOUR PERSONAL DETAILS — edit this file first.
+ *  YOUR PERSONAL DETAILS: edit this file first.
  * ============================================================
- * Everything personal on the site is read from here, so you only
- * update it in one place.
+ * Everything personal on the site is read from here.
  *
- * Empty strings ("") are treated as "not provided": the matching
- * link or button is hidden instead of showing a broken link.
- * While running `npm run dev`, the browser console lists any fields
- * that are still empty. That reminder never appears in production.
+ * Empty strings ("") mean "not provided": the matching link, button or
+ * block is hidden instead of showing a broken link. While running
+ * `npm run dev`, the browser console lists fields that are still empty.
  */
 export const profile = {
   name: "Muhammad Taha",
@@ -17,38 +15,55 @@ export const profile = {
 
   title: "AI Developer | AI Automation Engineer | Full-Stack Developer",
   headline: "Building Intelligent Systems. Automating the Future.",
+  // The hero's client-facing value line.
+  valueLine: "I build AI automations, machine-learning systems and websites that save businesses time.",
   intro:
-    "I design and build practical AI-powered software: agents that handle real business workflows, machine learning applied to real-world data, and full-stack web applications that connect it all together.",
+    "Mechatronics engineer (NUST) working across hardware, software and control systems. I turn business problems into working AI automations, computer-vision and machine-learning models, web apps and satellite-data analysis.",
 
-  // Contact & social. Use full URLs for LinkedIn and GitHub.
+  location: "Rawalpindi, Pakistan",
+  timezones: "Based in Pakistan · Works with US/UK/EU time zones",
+
+  // Contact & social. Use full URLs.
   email: "",
   linkedin: "",
-  github: "",
+  github: "https://github.com/mtaha2588",
+  links: {
+    // Optional. Each one stays hidden until filled in.
+    whatsapp: "", // international format, digits only after "+", e.g. "+923001234567"
+    fiverr: "",
+    upwork: "",
+    calendly: "", // e.g. "https://calendly.com/yourname/30min"; "Book a free call" uses it when set
+  },
 
-  // Résumé: put your PDF at frontend/public/resume.pdf and set
-  // resumeUrl to "/resume.pdf". While empty, the hero button reads
-  // "Request Resume" and takes visitors to the contact form instead.
+  // Résumé: put your PDF at frontend/public/resume.pdf and set resumeUrl to "/resume.pdf".
   resumeUrl: "",
 
   availability: {
     // Set open to false to hide the green "available" indicator.
     open: true,
-    label: "Available for remote opportunities",
-    detail: "Open to full-time remote roles and freelance or contract projects.",
+    label: "Available for freelance & remote work",
+    detail: "Taking on freelance projects and open to remote roles with startups and small businesses.",
   },
+
+  // Short facts shown in the hero's trust strip (text only, no logos).
+  trust: [
+    "NUST Mechatronics Engineering",
+    "IEEE conference paper co-author",
+    "Internships: NDMA · NICAT/NASTAP · NCRA",
+  ],
 
   about: {
     paragraphs: [
-      "I'm a developer focused on the point where artificial intelligence meets everyday business and real-world problems. I'm less interested in AI as a buzzword and more interested in what it can reliably do: read and route information, automate repetitive operations, surface patterns in data, and give people better information to make decisions.",
-      "My work spans the full stack. I build Python back ends and APIs, integrate large language models such as the OpenAI and Claude APIs, apply classical machine learning where it fits, and ship web interfaces in React. I like taking a project from a rough problem statement to a working system that someone can actually use.",
-      "The projects on this site are my active portfolio work. Each case study explains the problem, the approach and the architecture honestly, including its current status, so you can see how I think and how I build.",
+      "I'm Muhammad Taha, a Mechatronics Engineering graduate of NUST (class of 2026) based in Rawalpindi, Pakistan. Mechatronics trained me to think in whole systems: sensors and hardware, the software that reads them, and the control logic that acts on them. I bring that same end-to-end view to AI and software projects.",
+      "My work spans machine learning and computer vision (including CNN models and satellite imagery), AI automation, and full-stack web development. I co-authored an IEEE conference paper on machine-learning-based energy prediction for hybrid solar-wind energy harvesters, and I've worked on web, portal and data projects during internships at NDMA, NICAT/NASTAP and NCRA.",
+      "Today I help startups and small businesses with AI automations, ML and computer-vision systems, business websites and web apps, and geospatial analysis with Google Earth Engine. Every case study on this site states its real status, so you can see exactly what is built and what is in progress.",
     ],
-    // Shown in the About section and the 3D identity panel.
+    // Shown as focus areas and in the 3D identity panel.
     interests: [
-      "AI agents & LLM tooling",
-      "Machine learning on geospatial data",
-      "Business process automation",
-      "Full-stack web applications",
+      "AI automation & agents",
+      "Machine learning & computer vision",
+      "Business websites & web apps",
+      "Geospatial & satellite-data analysis",
     ],
     principles: [
       {
@@ -56,28 +71,27 @@ export const profile = {
         text: "I start from the problem and the people affected by it, then choose the simplest technology that solves it reliably.",
       },
       {
-        title: "Automation with oversight",
-        text: "Automated workflows should be observable, logged and easy to review, with a human in the loop where decisions matter.",
+        title: "Systems thinking",
+        text: "Mechatronics taught me to design across hardware, software and control. I look at how every part of a solution fits together.",
       },
       {
         title: "Honest scoping",
         text: "I communicate clearly about what is built, what is in progress and what is planned, with no inflated claims.",
       },
       {
-        title: "Always learning",
-        text: "AI tooling changes quickly. I keep building, testing new approaches and documenting what I learn along the way.",
+        title: "Automation with oversight",
+        text: "Automated workflows should be observable, logged and easy to review, with a human in the loop where decisions matter.",
       },
     ],
   },
 };
 
-/** Returns the names of profile fields that are still empty or placeholders. */
+/** Returns the names of profile fields that are still empty. */
 export function missingProfileFields() {
   const missing = [];
-  if (!profile.name || profile.name === "Your Name") missing.push("name");
   if (!profile.email) missing.push("email");
   if (!profile.linkedin) missing.push("linkedin");
-  if (!profile.github) missing.push("github");
-  if (!profile.resumeUrl) missing.push("resumeUrl (optional)");
+  if (!profile.resumeUrl) missing.push("resumeUrl");
+  for (const [k, v] of Object.entries(profile.links)) if (!v) missing.push(`links.${k} (optional)`);
   return missing;
 }

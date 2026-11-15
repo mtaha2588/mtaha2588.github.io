@@ -20,6 +20,13 @@ export const STATIONS = [
     mobile: { pos: [0, -1.5, 23], target: [0, 10.5, 0] },
   },
   {
+    id: "services",
+    label: "Services",
+    // Pulled back and centred: the globe and its orbit sit behind the service cards.
+    desktop: { pos: [0, 6.5, 26], target: [0, 1.2, 0] },
+    mobile: { pos: [0, 9, 40], target: [0, 5, 0] },
+  },
+  {
     id: "projects",
     label: "Exhibitions",
     // High establishing shot: the globe with all three exhibitions around it.
@@ -29,6 +36,7 @@ export const STATIONS = [
   { id: "avalanche", label: "Avalanche Intelligence", ...exhibitPose(EXHIBITS.avalanche) },
   { id: "agent", label: "Automation Agent", ...exhibitPose(EXHIBITS.agent, { lift: 1.6, desktopShift: 2.6 }) },
   { id: "car", label: "Car Sales Platform", ...exhibitPose(EXHIBITS.car, { lift: 0.9 }) },
+  { id: "gallery", label: "Project Gallery", ...exhibitPose(ENV.gallery, { desktopShift: 0, lift: 2.6 }) },
   { id: "lab", label: "AI Workflow Lab", ...exhibitPose(ENV.lab, { desktopShift: 6, lift: 0.5 }) },
   { id: "skills", label: "Skills Constellation", ...exhibitPose(ENV.skills, { desktopShift: 9.5, lift: 0 }) },
   { id: "about", label: "Identity", ...exhibitPose(ENV.about, { desktopShift: 3.8, lift: 2 }) },
