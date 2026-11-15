@@ -124,7 +124,7 @@
     "highlights": [
       "Rule-based workflow engine (LLM layer planned)",
       "Every step logged for human review",
-      "Live demo API on this site"
+      "Live demo you can try on this site"
     ],
     "problem": "Small teams spend significant time on repetitive operational work: copying data between tools, compiling status updates, summarising information and preparing recurring reports. The work is necessary but low-leverage, and doing it by hand is slow and error-prone.",
     "solution": "An agent built around a large language model that can plan a task, call a defined set of tools (API integrations, data processing functions, report generators) and assemble the results. Workflows are triggered on a schedule or by events, every step is logged, and outputs can be held for human review before they are sent.",
@@ -219,7 +219,7 @@
       "github": ""
     },
     "whoItHelps": "Small teams spending hours on inbox triage, data entry between tools and recurring reports.",
-    "currentStatus": "Prototype with a working rule-based engine and live demo API on this site; LLM planning layer planned.",
+    "currentStatus": "Prototype with a working rule-based engine and live demo on this site (runs in your browser); LLM planning layer planned.",
     "thumbnail": "projects/ai-business-automation-agent.webp",
     "thumbnailAlt": "The AI Business Automation Agent's 3D workflow exhibit with its status, log and engine panels"
   },

@@ -17,7 +17,13 @@ import { SAMPLE_INVENTORY } from "../data/sampleInventory";
  */
 export async function loadExhibitData() {
   if (!isApiConfigured) {
-    exhibits.set({ apiOnline: false, terrain: { ...localTerrain(), source: "local" }, inventory: SAMPLE_INVENTORY });
+    // Free static build: everything is computed in the browser and fully interactive.
+    exhibits.set({
+      apiOnline: true,
+      terrain: { ...localTerrain(), source: "browser" },
+      inventory: SAMPLE_INVENTORY,
+      pipeline: await demoApi.pipeline(),
+    });
     return;
   }
   // Render local placeholders immediately, then swap in live data once the server answers.

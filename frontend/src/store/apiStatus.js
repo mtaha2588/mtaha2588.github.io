@@ -5,7 +5,10 @@ import { API_URL, isApiConfigured } from "../lib/api";
  * Live state of the backend API, shared by the status dot, the demos and
  * the contact form.
  *
- *   status: "checking" | "live" | "waking" | "offline"
+ *   status: "checking" | "live" | "waking" | "offline" | "browser"
+ *
+ * "browser": no backend in this build (free GitHub Pages hosting); the
+ * demos run in the visitor's browser instead (lib/demoLocal.js).
  *
  * Free Render servers sleep after inactivity and take 30–60 s to wake.
  * On page load we send a silent /api/health request; while it fails we
@@ -14,7 +17,7 @@ import { API_URL, isApiConfigured } from "../lib/api";
  * keep checking slowly in the background so the UI recovers by itself.
  */
 export const [apiStatus, useApiStatus] = createStore({
-  status: isApiConfigured ? "checking" : "offline",
+  status: isApiConfigured ? "checking" : "browser",
   configured: isApiConfigured,
   startedAt: 0,
   lastError: "",

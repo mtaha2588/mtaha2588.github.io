@@ -408,7 +408,7 @@ function CarPanels() {
             )}
           </>
         ) : (
-          <p className="text-fg-subtle">Start the backend to see live demo leads.</p>
+          <p className="text-fg-subtle">No demo leads yet: try the lead form.</p>
         )}
       </HoloPanel>
     </>

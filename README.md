@@ -139,47 +139,28 @@ cd ..\backend
 .venv\Scripts\python -m pytest -q
 ```
 
-## 4. Deploy
+## 4. Deploy (free)
 
-Live site: **https://mtaha2588.github.io** (GitHub Pages). API: Render (free tier).
+Live site: **https://mtaha2588.github.io**, hosted free on GitHub Pages. No server is needed: the three project demos run in the visitor's browser (`frontend/src/lib/demoLocal.js`, a port of the Python rules in `backend/app/demos/`), and the contact form opens the visitor's email app with the message filled in.
 
-### a) Website on GitHub Pages (automatic)
-
-Every push to `main` runs `.github/workflows/deploy.yml`: it builds `frontend/` and publishes it to GitHub Pages.
+### a) Publish an update
 
 ```bash
-git add -A
-git commit -m "Describe your change"
-git push
+cd frontend
+npm run build
 ```
 
-The build also writes one HTML file per page (so `/projects/<slug>` works on refresh), `404.html`, `sitemap.xml`, `robots.txt` and the social-preview tags (`frontend/scripts/postbuild.mjs`).
+Then publish `frontend/dist` to the `gh-pages` branch (GitHub Pages serves that branch). Ask Claude Code to "publish the site", or copy the contents of `dist/` into a checkout of the `gh-pages` branch, commit and push.
 
-Repository **variables** (Settings → Secrets and variables → Actions → Variables), all optional:
+Optional automatic publishing: copy `deploy/github-pages-workflow.yml` to `.github/workflows/deploy.yml`, set Settings → Pages → Source to "GitHub Actions", and every push to `main` publishes the site. (Pushing a workflow file needs a GitHub token with the `workflow` permission: run `gh auth refresh -s workflow` once.)
 
-| Variable                | What it does                                                                                                                       |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `VITE_API_URL`          | Backend URL, e.g. `https://ai-universe-api.onrender.com` (no trailing slash). Without it the demos show labelled offline previews. |
-| `VITE_GOATCOUNTER_CODE` | Your GoatCounter code (e.g. `mtaha` for mtaha.goatcounter.com) for privacy-friendly visit counts.                                  |
+The build writes one HTML file per page (so `/projects/<slug>` works on refresh), `404.html`, `sitemap.xml`, `robots.txt` and the social-preview tags (`frontend/scripts/postbuild.mjs`).
 
-After changing a variable, re-run the workflow: Actions → "Deploy to GitHub Pages" → Run workflow.
+Optional build variable: `VITE_GOATCOUNTER_CODE` for free, privacy-friendly visit counts.
 
-### b) Backend on Render
+### b) Optional: run the FastAPI backend
 
-1. Open **https://render.com/deploy?repo=https://github.com/mtaha2588/mtaha2588.github.io**, log in, and approve. Render reads `render.yaml` and creates the **API** and a **PostgreSQL** database. `CORS_ORIGINS` is already set to `https://mtaha2588.github.io`.
-2. Optional: fill in the `SMTP_*` values to get an email for each new contact message.
-3. Check `https://<your-api>.onrender.com/api/health` returns `"status": "ok"`, then set it as `VITE_API_URL` (step a).
-
-Notes:
-
-- Free Render services sleep when idle and take ~30–60 s to wake. The site handles this: it wakes the API in the background, shows "Waking up the live server…", falls back to labelled offline previews after ~90 s, and the contact form offers a pre-filled email instead.
-- Render's free web services have an ephemeral disk, so production uses PostgreSQL via `DATABASE_URL`. Free Render databases expire after a limited period; move to Neon or Supabase by changing `DATABASE_URL`.
-- `ADMIN_API_KEY` is generated for you. Read contact messages with:
-  ```powershell
-  curl.exe -H "X-Admin-Key: <key>" https://<your-api>.onrender.com/api/contact/messages
-  ```
-
-`VITE_*` variables are public (bundled into the JavaScript); never put secrets there. Secrets only go in the backend's environment.
+The `backend/` folder still works locally (`npm run dev`) and can be hosted anywhere that runs Python (`render.yaml` is a ready blueprint). If you ever host it, build the site with `VITE_API_URL=<your API URL>` and the demos and contact form use it instead of the browser versions. It is not needed for the live site.
 
 ### c) Content you can edit without code
 

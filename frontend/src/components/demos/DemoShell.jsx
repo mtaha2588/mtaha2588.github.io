@@ -20,6 +20,7 @@ export default function DemoShell({ title, endpoint, children, offlinePreview = 
     return () => clearInterval(id);
   }, [status]);
 
+  const browser = status === "browser";
   const waking = status === "waking" || status === "checking";
   const offline = status === "offline";
 
@@ -27,7 +28,11 @@ export default function DemoShell({ title, endpoint, children, offlinePreview = 
     <div className="mt-6 rounded-xl border border-line-strong bg-ink-950/50 p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="font-mono text-[11px] tracking-[0.2em] text-cyan uppercase">{title}</p>
-        {status === "live" ? (
+        {browser ? (
+          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-signal uppercase">
+            <Radio size={12} aria-hidden="true" /> Live · runs in your browser
+          </span>
+        ) : status === "live" ? (
           <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-signal uppercase">
             <Radio size={12} aria-hidden="true" /> Live API
           </span>
@@ -41,7 +46,7 @@ export default function DemoShell({ title, endpoint, children, offlinePreview = 
           </span>
         )}
       </div>
-      <p className="mt-1 truncate font-mono text-[10px] text-fg-subtle">{endpoint}</p>
+      {!browser && <p className="mt-1 truncate font-mono text-[10px] text-fg-subtle">{endpoint}</p>}
 
       {waking && (
         <div

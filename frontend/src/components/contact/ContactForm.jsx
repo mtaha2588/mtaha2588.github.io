@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
-import { apiRequest } from "../../lib/api";
+import { apiRequest, isApiConfigured } from "../../lib/api";
 import { exhibits } from "../../store/exhibits";
 import { useApiStatus, waitForApi } from "../../store/apiStatus";
 import { profile } from "../../data/profile";
@@ -80,6 +80,13 @@ export default function ContactForm() {
     if (Object.keys(found).length) return;
     setMessage("");
 
+    // Free static build (no server): hand the message to the visitor's email app, fully pre-filled.
+    if (!isApiConfigured) {
+      if (profile.email) window.location.href = mailtoHref(form);
+      setStatus("mailto");
+      return;
+    }
+
     // Give a sleeping free server time to wake before we call it.
     if (apiState !== "live") {
       setStatus("waking");
@@ -130,6 +137,40 @@ export default function ContactForm() {
         </p>
         <button type="button" onClick={() => setStatus("idle")} className="btn-ghost mt-5 !px-4 !py-2 !text-sm">
           Send another message
+        </button>
+      </div>
+    );
+  }
+
+  if (status === "mailto") {
+    return (
+      <div className="rounded-xl border border-cyan/30 bg-cyan/[0.06] p-6 text-center" role="status">
+        <Mail size={32} className="mx-auto text-cyan" aria-hidden="true" />
+        {profile.email ? (
+          <>
+            <p className="mt-3 font-display text-xl font-semibold text-fg">Your email app should open now</p>
+            <p className="mt-1 text-sm text-fg-muted">
+              Your message is filled in; just press Send. If nothing opened, email me at{" "}
+              <a href={mailtoHref(form)} className="text-cyan underline underline-offset-2">
+                {profile.email}
+              </a>
+              .
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="mt-3 font-display text-xl font-semibold text-fg">Let's talk</p>
+            <p className="mt-1 text-sm text-fg-muted">
+              Please reach me through{" "}
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-cyan underline">
+                GitHub
+              </a>{" "}
+              for now.
+            </p>
+          </>
+        )}
+        <button type="button" onClick={() => setStatus("idle")} className="btn-ghost mt-5 !px-4 !py-2 !text-sm">
+          Back to the form
         </button>
       </div>
     );

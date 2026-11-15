@@ -14,6 +14,7 @@ const STYLES = {
 export default function ApiStatusDot({ className = "" }) {
   const status = useApiStatus((s) => s.status);
   const configured = useApiStatus((s) => s.configured);
+  if (status === "browser") return null; // no server in this build: nothing to report
   const style = STYLES[status] ?? STYLES.offline;
   // Callers may pass "hidden sm:inline-flex"; only default to inline-flex when they don't set a display.
   const display = /(^|\s)hidden(\s|$)/.test(className) ? "" : "inline-flex";

@@ -117,7 +117,7 @@ export default function LeadSimulator() {
             type="number"
             min="1000"
             max="1000000"
-            step="500"
+            step="100"
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
             className="field !py-2"
