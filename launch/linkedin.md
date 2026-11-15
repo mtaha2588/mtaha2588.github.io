@@ -26,7 +26,7 @@ Background:
 How I work: free call → fixed written quote → weekly updates → delivery with two weeks of support.
 
 Portfolio and case studies: https://mtaha2588.github.io
-Get in touch: [your email] or via the contact form on my site.
+Get in touch: sigmaemenent@gmail.com or via the contact form on my site.
 
 ## Featured section (add these links)
 

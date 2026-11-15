@@ -24,7 +24,7 @@ export const profile = {
   timezones: "Based in Pakistan · Works with US/UK/EU time zones",
 
   // Contact & social. Use full URLs.
-  email: "",
+  email: "sigmaemenent@gmail.com",
   linkedin: "",
   github: "https://github.com/mtaha2588",
   links: {
